@@ -1,11 +1,12 @@
 import './style/login.css';
 import React, { Component } from "react";
+import {loginCall} from './calls/api-calls';
 export default class Login extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            mailValue: '',
-            passwordValue: '',
+            mailValue: 'user@example.es',
+            passwordValue: '1234',
             responseState: null,
             responseMessage: ''
         }
@@ -18,8 +19,9 @@ export default class Login extends Component {
     }
     submitHandler = async (event) => {
         event.preventDefault();
-        console.log(this.state.mailValue);
-        console.log(this.state.passwordValue);
+        this.setState({responseState: await loginCall(this.state.mailValue, this.state.passwordValue)});
+        console.log(document.cookie);
+
     }
     render() {
         const { mailValue, passwordValue } = this.state;
