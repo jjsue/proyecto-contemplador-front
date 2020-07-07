@@ -6,8 +6,8 @@ export default class Login extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            mailValue: 'user@example.es',
-            passwordValue: '1234',
+            mailValue: '',
+            passwordValue: '',
             responseState: null,
             responseMessage: '',
             redirect: null,
@@ -26,7 +26,7 @@ export default class Login extends Component {
             this.props.parentLogin();
             this.setState({
                 redirect:
-                        <Redirect to="/profile" />
+                    <Redirect to="/profile" />
             })
         } else {
             this.setState({

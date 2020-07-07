@@ -5,10 +5,10 @@ export default class Register extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            userValue: 'Hulk',
-            mailValue: 'user@example.es',
-            passwordValue0: '1234',
-            passwordValue1: '12345',
+            userValue: '',
+            mailValue: '',
+            passwordValue0: '',
+            passwordValue1: '',
             responseState: null,
             responseMessage: null,
             redirect: null,
