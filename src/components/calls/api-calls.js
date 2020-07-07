@@ -21,5 +21,25 @@ async function loginCall(user, pass) {
             return error.response;
         })
 }
+async function registerCall(user, pass, email) {
+    return axios({
+        method: 'POST',
+        url: `${backEnd}/api/register`,
+        // headers: {
+        // },
+        data: {
+            userName: `${user}`,
+            email: `${email}`,
+            password: `${pass}`
+        },
+        withCredentials: false,
+    })
+        .then(function (response) {
+            return response.data;
+        })
+        .catch(function (error) {
+            return error.response;
+        })
+}
 
-export { loginCall };
+export { loginCall, registerCall };

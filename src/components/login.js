@@ -26,9 +26,7 @@ export default class Login extends Component {
             this.props.parentLogin();
             this.setState({
                 redirect:
-                    <Route>
-                        <Redirect to="/home" />
-                    </Route>
+                        <Redirect to="/profile" />
             })
         } else {
             this.setState({
@@ -63,7 +61,6 @@ export default class Login extends Component {
                                                     <label htmlFor="inputPassword">Palabra secreta</label>
                                                 </div>
                                                 {this.state.redirect}
-
                                                 {/* <div className="custom-control custom-checkbox mb-3">
                                                     <input type="checkbox" className="custom-control-input" id="customCheck1" />
                                                     <label className="custom-control-label" htmlFor="customCheck1">Recordar</label>
