@@ -11,7 +11,7 @@ export default class MyRouter extends Component {
         super(props);
         this.state = {
             username: '',
-            nameCookie: '',
+            cookieHandler: new Cookies(true),
             showingNow:
                 <NavDropdown title="Usuario" id="basic-nav-dropdown">
                     <Link to="/login" className="animate slideIn dropdown-item">Iniciar sesión</Link>
@@ -20,24 +20,28 @@ export default class MyRouter extends Component {
         }
     }
     componentDidMount() {
-        const cookies = new Cookies(true);
-        if (cookies.get('userName') !== undefined) {
-            console.log("If compdidmount")
-            this.setState({username: cookies.get('userName')});
+        if (this.state.cookieHandler.get('userName') !== undefined) {
+            this.setState({ username: this.state.cookieHandler.get('userName') });
             this.setState({
                 showingNow:
-                    <NavDropdown title={cookies.get('userName')} id="basic-nav-dropdown">
+                    <NavDropdown title={this.state.cookieHandler.get('userName')} id="basic-nav-dropdown">
                         <Link to="/profile" className="animate slideIn dropdown-item">Perfil</Link>
                         <Link to="/exit" className="animate slideIn dropdown-item">Cerrar sesión</Link>
                     </NavDropdown>
             });
         }
     }
-    test = (event) => {
-        this.setState({showingNow: ''});
+    handleLogin = (event) => {
+        this.setState({ username: this.state.cookieHandler.get('userName') });
+        this.setState({
+            showingNow:
+                <NavDropdown title={this.state.cookieHandler.get('userName')} id="basic-nav-dropdown">
+                    <Link to="/profile" className="animate slideIn dropdown-item">Perfil</Link>
+                    <Link to="/exit" className="animate slideIn dropdown-item">Cerrar sesión</Link>
+                </NavDropdown>
+        });
     }
     render() {
-        console.log("Re-render");
         return (
             <>
                 <Router>
@@ -60,7 +64,10 @@ export default class MyRouter extends Component {
                         <Route exact path="/" component={Home} />
                         {/* <Route path="/ads/:adId" component={DetailComponent} /> */}
                         <Route path="/register" component={Register} />
-                        <Route path="/login" component={Login} />
+                        <Route path='/login' //De esta forma puedo pasar las props que quiera al componente login
+                            render={(props) => (
+                                <Login {...props} parentLogin={this.handleLogin} />
+                            )} />
                     </Switch>
                 </Router>
             </>

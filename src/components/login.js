@@ -1,7 +1,7 @@
 import './style/login.css';
 import React, { Component } from "react";
 import { loginCall } from './calls/api-calls';
-import { BrowserRouter as Router, Route, Link, Switch, Redirect } from "react-router-dom";
+import { BrowserRouter as Route, Redirect } from "react-router-dom";
 export default class Login extends Component {
     constructor(props) {
         super(props);
@@ -23,7 +23,13 @@ export default class Login extends Component {
         event.preventDefault();
         this.setState({ responseState: await loginCall(this.state.mailValue, this.state.passwordValue) });
         if ('authToken' in this.state.responseState && 'userName' in this.state.responseState) {
-            this.setState({ redirect: <Redirect to="/home" /> })
+            this.props.parentLogin();
+            this.setState({
+                redirect:
+                    <Route>
+                        <Redirect to="/home" />
+                    </Route>
+            })
         } else {
             this.setState({
                 redirect:
