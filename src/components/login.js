@@ -1,6 +1,7 @@
 import './style/login.css';
 import React, { Component } from "react";
-import {loginCall} from './calls/api-calls';
+import { loginCall } from './calls/api-calls';
+import { BrowserRouter as Router, Route, Link, Switch, Redirect } from "react-router-dom";
 export default class Login extends Component {
     constructor(props) {
         super(props);
@@ -8,7 +9,8 @@ export default class Login extends Component {
             mailValue: 'user@example.es',
             passwordValue: '1234',
             responseState: null,
-            responseMessage: ''
+            responseMessage: '',
+            redirect: null,
         }
     }
     changeHandlerMail = (event) => {
@@ -19,9 +21,17 @@ export default class Login extends Component {
     }
     submitHandler = async (event) => {
         event.preventDefault();
-        this.setState({responseState: await loginCall(this.state.mailValue, this.state.passwordValue)});
-        console.log(document.cookie);
-
+        this.setState({ responseState: await loginCall(this.state.mailValue, this.state.passwordValue) });
+        if ('authToken' in this.state.responseState && 'userName' in this.state.responseState) {
+            this.setState({ redirect: <Redirect to="/home" /> })
+        } else {
+            this.setState({
+                redirect:
+                    <div className="alert alert-warning" role="alert">
+                        Ha ocurrido un error
+                    </div>
+            });
+        }
     }
     render() {
         const { mailValue, passwordValue } = this.state;
@@ -46,6 +56,7 @@ export default class Login extends Component {
                                                     <input type="password" id="inputPassword" className="form-control" placeholder="Password" value={passwordValue} required onChange={this.changeHandlerPass} />
                                                     <label htmlFor="inputPassword">Palabra secreta</label>
                                                 </div>
+                                                {this.state.redirect}
 
                                                 {/* <div className="custom-control custom-checkbox mb-3">
                                                     <input type="checkbox" className="custom-control-input" id="customCheck1" />
