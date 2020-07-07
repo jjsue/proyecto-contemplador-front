@@ -2,9 +2,12 @@ import './style/myRouter.css';
 import React, { Component } from "react";
 import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 import { Navbar, Nav, NavDropdown } from 'react-bootstrap';
+//Components
 import Home from './home';
 import Register from './register';
 import Login from './login';
+import NpcList from './npcList';
+//Cookies
 import Cookies from 'universal-cookie';
 export default class MyRouter extends Component {
     constructor(props) {
@@ -52,6 +55,7 @@ export default class MyRouter extends Component {
                             <Nav className="mr-auto">
                                 {/* <Nav.Link href="#home">Home</Nav.Link> */}
                                 <Link to="/" className="nav-link">Home</Link>
+                                <Link to="/npclist" className="nav-link">Listado PNJ</Link>
                                 <NavDropdown title="Generador" id="basic-nav-dropdown">
                                     <Link to="/npcgenerator" className="animate slideIn dropdown-item">NPC</Link>
                                     {/* <NavDropdown.Divider /> */}
@@ -68,6 +72,8 @@ export default class MyRouter extends Component {
                             render={(props) => (
                                 <Login {...props} parentLogin={this.handleLogin} />
                             )} />
+                        <Route path="/npclist" component={NpcList} />
+                        <Route path="/npclist:id" component={NpcList} />
                     </Switch>
                 </Router>
             </>

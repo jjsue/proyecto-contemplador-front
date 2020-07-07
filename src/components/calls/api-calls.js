@@ -41,5 +41,20 @@ async function registerCall(user, pass, email) {
             return error.response;
         })
 }
+async function publicCharacterCall(queryString) {
+    return axios({
+        method: 'GET',
+        url: `${backEnd}/api/character?limit=8`,
+        // headers: {
+        // },
+        withCredentials: false,
+    })
+        .then(function (response) {
+            return response;
+        })
+        .catch(function (error) {
+            return error.response;
+        })
+}
 
-export { loginCall, registerCall };
+export { loginCall, registerCall, publicCharacterCall };
