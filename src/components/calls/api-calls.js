@@ -56,5 +56,26 @@ async function publicCharacterCall(queryString) {
             return error.response;
         })
 }
+async function characterCreatorCall(level, clase, raza, dices) {
+    return axios({
+        method: 'POST',
+        url: `${backEnd}/api/charactergenerator`,
+        // headers: {
+        // },
+        data: {
+            level: `${level}`,
+            class: `${clase}`,
+            race: `${raza}`,
+            dices: `${dices}`,
+        },
+        withCredentials: false,
+    })
+        .then(function (response) {
+            return response;
+        })
+        .catch(function (error) {
+            return error.response;
+        })
+}
 
-export { loginCall, registerCall, publicCharacterCall };
+export { loginCall, registerCall, publicCharacterCall, characterCreatorCall };

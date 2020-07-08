@@ -145,7 +145,7 @@ export default class NpcList extends Component {
                     paginationSecondArrow: "page-item disabled",
                 });
             }
-            if (this.state.responseState.data.length === 8) {
+            else if (this.state.responseState.data.length === 8) {
                 this.setState({
                     paginationThirdNumberClass: "page-item",
                     paginationSecondArrow: "page-item",

@@ -7,6 +7,7 @@ import Home from './home';
 import Register from './register';
 import Login from './login';
 import NpcList from './npcList';
+import NpcGenerator from './npcGenerator';
 //Cookies
 import Cookies from 'universal-cookie';
 export default class MyRouter extends Component {
@@ -65,6 +66,7 @@ export default class MyRouter extends Component {
                         </Navbar.Collapse>
                     </Navbar>
                     <Switch>
+                        <Route path="/npcgenerator" component={NpcGenerator} />
                         <Route exact path="/" component={Home} />
                         {/* <Route path="/ads/:adId" component={DetailComponent} /> */}
                         <Route path="/register" component={Register} />
