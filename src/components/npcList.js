@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import PnjCard from './pnjCard'
 import { publicCharacterCall } from './calls/api-calls';
 import { Switch } from 'react-router-dom';
+const queryString = require('query-string');
 export default class NpcList extends Component {
     constructor(props) {
         super(props);
@@ -28,10 +29,19 @@ export default class NpcList extends Component {
             paginationThirdNumber: 3,
             paginationThirdNumberClass: 'page-item',
             paginationPage: 1,
+            formName: undefined,
+            formRace: undefined,
+            formClass: undefined,
+            formLevelMax: undefined,
+            formLevelMin: undefined,
+            formSort: undefined,
         }
     }
-    async componentDidMount() {
-        this.setState({ responseState: await publicCharacterCall() });
+    componentDidMount() {
+        this.pnjCall(this.queryBuilder(this.state.paginationPage));
+    }
+    pnjCall = async (qstring) => {
+        this.setState({ responseState: await publicCharacterCall(qstring) });
         if (this.state.responseState.data.length > 0 && this.state.responseState.status === 200) {
             this.setState({ arrayToShow: null });
             let arrayVariable = []
@@ -40,6 +50,18 @@ export default class NpcList extends Component {
             }
             this.setState({ arrayToShow: arrayVariable });
         }
+    }
+    queryBuilder = (skip) => {
+        const myQuery = {}
+        myQuery.skip = (parseInt(skip) - 1) * 8;
+        myQuery.sort = this.state.formSort;
+        myQuery.name = this.state.formName;
+        myQuery.race = this.state.formRace;
+        myQuery.class = this.state.formClass;
+        myQuery.levelMax = this.state.formLevelMax;
+        myQuery.levelMin = this.state.formLevelMin;
+        myQuery.limit = 8;
+        return queryString.stringify(myQuery)
     }
     pagination = (event) => {
         event.preventDefault();
@@ -50,9 +72,11 @@ export default class NpcList extends Component {
             switch (event.target.value) {
                 case 'previous':
                     if (this.state.paginationPage - 1 === 1) {
-                        this.setState({paginationPage: this.state.paginationPage - 1});
+                        this.pnjCall(this.queryBuilder(1));
+                        this.setState({ paginationPage: this.state.paginationPage - 1 });
                     }
                     else {
+                        this.pnjCall(this.queryBuilder(parseInt(this.state.paginationPage) - 1));
                         this.setState({
                             paginationFirstNumber: this.state.paginationFirstNumber - 1,
                             paginationSecondNumber: this.state.paginationSecondNumber - 1,
@@ -63,10 +87,12 @@ export default class NpcList extends Component {
                     break;
                 case 'next':
                     if (this.state.paginationPage === 1) {
+                        this.pnjCall(this.queryBuilder(parseInt(this.state.paginationPage) + 1));
                         this.setState({
                             paginationPage: this.state.paginationPage + 1,
                         });
                     } else {
+                        this.pnjCall(this.queryBuilder(parseInt(this.state.paginationPage) + 1));
                         this.setState({
                             paginationFirstNumber: this.state.paginationFirstNumber + 1,
                             paginationSecondNumber: this.state.paginationSecondNumber + 1,
@@ -80,7 +106,7 @@ export default class NpcList extends Component {
             }
         }
         if (!isNaN(event.target.value)) {
-            if (this.state.paginationPage - 1 === 1) {
+            if (parseInt(event.target.value) === 1) {
                 this.setState({ paginationPage: this.state.paginationPage - 1 });
             } else {
                 this.setState({
@@ -90,6 +116,7 @@ export default class NpcList extends Component {
                     paginationPage: parseInt(event.target.value),
                 });
             }
+            this.pnjCall(this.queryBuilder(parseInt(event.target.value)));
         }
     }
     componentDidUpdate(prevProps, prevState) {
@@ -111,7 +138,19 @@ export default class NpcList extends Component {
                 paginationSecondArrow: "page-item",
             });
         }
-        if (prevState.paginationPage === this.state.paginationPage) {
+        if (prevState.responseState !== this.state.responseState) {
+            if (this.state.responseState.data.length !== 8) {
+                this.setState({
+                    paginationThirdNumberClass: "page-item disabled",
+                    paginationSecondArrow: "page-item disabled",
+                });
+            }
+            if (this.state.responseState.data.length === 8) {
+                this.setState({
+                    paginationThirdNumberClass: "page-item",
+                    paginationSecondArrow: "page-item",
+                });
+            }
         }
     }
     render() {

@@ -44,7 +44,7 @@ async function registerCall(user, pass, email) {
 async function publicCharacterCall(queryString) {
     return axios({
         method: 'GET',
-        url: `${backEnd}/api/character?limit=8`,
+        url: `${backEnd}/api/character?${queryString}`,
         // headers: {
         // },
         withCredentials: false,
