@@ -41,14 +41,18 @@ export default class NpcList extends Component {
         this.pnjCall(this.queryBuilder(this.state.paginationPage));
     }
     pnjCall = async (qstring) => {
-        this.setState({ responseState: await publicCharacterCall(qstring) });
-        if (this.state.responseState.data.length > 0 && this.state.responseState.status === 200) {
-            this.setState({ arrayToShow: null });
-            let arrayVariable = []
-            for (let i = 0; i < this.state.responseState.data.length; i++) {
-                arrayVariable[i] = <PnjCard key={i} data={this.state.responseState.data[i]} />
+        try {
+            this.setState({ responseState: await publicCharacterCall(qstring) });
+            if (this.state.responseState.data.length > 0 && this.state.responseState.status === 200) {
+                this.setState({ arrayToShow: null });
+                let arrayVariable = []
+                for (let i = 0; i < this.state.responseState.data.length; i++) {
+                    arrayVariable[i] = <PnjCard key={i} data={this.state.responseState.data[i]} />
+                }
+                this.setState({ arrayToShow: arrayVariable });
             }
-            this.setState({ arrayToShow: arrayVariable });
+        } catch (err) {
+            console.log(err);
         }
     }
     queryBuilder = (skip) => {

@@ -1,5 +1,5 @@
 import './style/npcGenerator.css'
-import {SquareFillIcon} from '@primer/octicons-react'
+import { SquareFillIcon } from '@primer/octicons-react'
 import React, { Component } from "react";
 import { Button } from 'react-bootstrap';
 export default class ShowNPC extends Component {
@@ -16,14 +16,14 @@ export default class ShowNPC extends Component {
         let ataqueBase = [];
         let conjuros = [];
         for (let i = 0; i < this.props.data.habilidades.length; i++) {
-                habilidades[i] =
-                    <tr key={i}  className={this.props.data.habilidades[i][6] ? 'table-primary' : null}>
-                        <th scope="row">{this.props.data.habilidades[i][0]} {this.props.data.habilidades[i][7] ? <SquareFillIcon size={16} /> : null}</th>
-                        <td>{parseInt(this.props.data.habilidades[i][3]) + parseInt(this.props.data.habilidades[i][4]) + parseInt(this.props.data.habilidades[i][5])}</td>
-                        <td>{this.props.data.habilidades[i][3]}</td>
-                        <td>{this.props.data.habilidades[i][4]}</td>
-                        <td>{this.props.data.habilidades[i][5]}</td>
-                    </tr>
+            habilidades[i] =
+                <tr key={i} className={this.props.data.habilidades[i][6] ? 'table-primary' : null}>
+                    <th scope="row">{this.props.data.habilidades[i][0]} {this.props.data.habilidades[i][7] ? <SquareFillIcon size={16} /> : null}</th>
+                    <td>{parseInt(this.props.data.habilidades[i][3]) + parseInt(this.props.data.habilidades[i][4]) + parseInt(this.props.data.habilidades[i][5])}</td>
+                    <td>{this.props.data.habilidades[i][3]}</td>
+                    <td>{this.props.data.habilidades[i][4]}</td>
+                    <td>{this.props.data.habilidades[i][5]}</td>
+                </tr>
         }
         for (let i = 0; i < this.props.data.ataqueBase.length; i++) {
             ataqueBase[i] =
@@ -109,6 +109,29 @@ export default class ShowNPC extends Component {
                                             <th scope="row">Car</th>
                                             <td>{this.props.data.caracteristicas.Car[0]}</td>
                                             <td>{this.props.data.caracteristicas.Car[1]}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div className="table-responsive">
+                                <table className="table table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th colSpan="6" className="text-center">Salvaciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <th scope="row">Fortaleza</th>
+                                            <td>{parseInt(this.props.data.salvaciones.fortaleza) + parseInt(this.props.data.caracteristicas.Con[1])}</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Reflejos</th>
+                                            <td>{parseInt(this.props.data.salvaciones.reflejos) + parseInt(this.props.data.caracteristicas.Des[1])}</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Voluntad</th>
+                                            <td>{parseInt(this.props.data.salvaciones.voluntad) + parseInt(this.props.data.caracteristicas.Sab[1])}</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -258,12 +281,7 @@ export default class ShowNPC extends Component {
                     </div>
                     <hr className="mb-4" />
                     <div className="row mb-2">
-                        <div className="col-md">
-                            <Button variant="primary" size="lg" block>Guardar</Button>{' '}
-                        </div>
-                        <div className="col-md">
-                            <Button variant="warning" size="lg" block>Crear otro</Button>{' '}
-                        </div>
+                        {this.props.bottom}
                     </div>
                 </div>
             </>

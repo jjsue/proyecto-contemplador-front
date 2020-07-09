@@ -1,6 +1,6 @@
 const axios = require('axios').default;
 
-const backEnd = 'http://localhost:3000'
+const backEnd = 'http://213.194.128.57:3000'
 
 async function loginCall(user, pass) {
     return axios({

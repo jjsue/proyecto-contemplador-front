@@ -87,6 +87,15 @@ export default class NpcGenerator extends Component {
                     </Form>
                 </>,
             responseState: null,
+            bottomChildren:
+                <>
+                    <div className="col-md">
+                        <Button variant="primary" size="lg" block>Guardar</Button>{' '}
+                    </div>
+                    <div className="col-md">
+                        <Button variant="warning" size="lg" block onClick={this.onClickChildrenReturn}>Crear otro</Button>{' '}
+                    </div>
+                </>,
         }
     }
     componentDidMount() {
@@ -104,20 +113,27 @@ export default class NpcGenerator extends Component {
     diceController = (event) => {
         this.setState({ formDados: event.target.value });
     }
-    submitController = (event) => {
+    onClickChildrenReturn = (event) => {
         event.preventDefault();
-        this.callToBack();
+        this.setState({
+            renderingNow: this.state.form,
+            title: "Generador de NPC",
+        });
     }
-    callToBack = async () => {
-        let response = await characterCreatorCall(this.state.formNivel, this.state.formClase, this.state.formRaza, this.state.formDados);
-        this.setState({responseState: response});
-        this.evaluator(response);
+    submitController = async (event) => {
+        event.preventDefault();
+        try {
+            let response = await characterCreatorCall(this.state.formNivel, this.state.formClase, this.state.formRaza, this.state.formDados);
+            this.setState({ responseState: response });
+            this.evaluator(response);
+        } catch (err) {
+            console.log(err);
+        }
     }
     evaluator = (responseData) => {
-        console.log(responseData);
         if (responseData.status === 200) {
             this.setState({
-                renderingNow: <ShowNPC data={responseData.data.createdCharacter}/>,
+                renderingNow: <ShowNPC data={responseData.data.createdCharacter} bottom={this.state.bottomChildren} />,
                 title: "Tu personaje",
             });
         }
@@ -129,7 +145,7 @@ export default class NpcGenerator extends Component {
                     <div className="card border-0 shadow my-5">
                         <div className="card-body p-5">
                             <h1 className="font-weight-light">{this.state.title}</h1>
-                            <hr/>
+                            <hr />
                             {this.state.renderingNow}
                             {/* <div style={{ height: '700px' }}></div> */}
                         </div>
