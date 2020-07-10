@@ -1,5 +1,4 @@
 import './style/loading.css';
-import './style/npcList.css';
 import React, { Component } from "react";
 import PnjCard from './pnjCard'
 import { publicCharacterCall } from './calls/api-calls';
@@ -11,17 +10,6 @@ export default class NpcList extends Component {
         super(props);
         this.state = {
             bottomPage: null,
-            noResults:
-                <header className="masthead">
-                    <div className="container h-100">
-                        <div className="row h-100 align-items-center">
-                            <div className="col-12 text-center">
-                                <h1 className="font-weight-light">Vertically Centered Masthead Content</h1>
-                                <p className="lead">A great starter layout for a landing page</p>
-                            </div>
-                        </div>
-                    </div>
-                </header>,
             renderForm:
                 <Form onSubmit={this.submitController}>
                     <div className="container">
@@ -183,7 +171,6 @@ export default class NpcList extends Component {
         this.setState({ formRace: event.target.value });
     }
     clickController = (event) => {
-        console.log(event.target.value);
         if (event.target.value === 'filter') {
             this.pnjCall(this.queryBuilder(this.state.paginationPage));
         } else if (event.target.value === 'openFilters') {
@@ -223,7 +210,9 @@ export default class NpcList extends Component {
                 this.setState({ arrayToShow: arrayVariable });
             }
             else if (this.state.responseState.data.length === 0) {
-                this.setState({ arrayToShow: this.state.noResults });
+                this.setState({ arrayToShow: "No resultados" });
+            } else {
+                this.setState({ arrayToShow: "Ha ocurrido algún tipo de error, vuelve a intentarlo en unos segundos." });
             }
         } catch (err) {
             console.log(err);
