@@ -1,13 +1,136 @@
 import './style/loading.css';
+import './style/npcList.css';
 import React, { Component } from "react";
 import PnjCard from './pnjCard'
 import { publicCharacterCall } from './calls/api-calls';
 import { Switch } from 'react-router-dom';
+import { Button, Form } from 'react-bootstrap';
 const queryString = require('query-string');
 export default class NpcList extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            bottomPage: null,
+            noResults:
+                <header className="masthead">
+                    <div className="container h-100">
+                        <div className="row h-100 align-items-center">
+                            <div className="col-12 text-center">
+                                <h1 className="font-weight-light">Vertically Centered Masthead Content</h1>
+                                <p className="lead">A great starter layout for a landing page</p>
+                            </div>
+                        </div>
+                    </div>
+                </header>,
+            renderForm:
+                <Form onSubmit={this.submitController}>
+                    <div className="container">
+                        <div className="row">
+                            <Form.Group controlId="formBasicEmail" className="col-sm">
+                                <Form.Label>Nombre</Form.Label>
+                                <Form.Control type="text" placeholder="Nombre" onChange={this.nameController} />
+                            </Form.Group>
+                            <div className="col-sm">
+                                <div className="row">
+                                    <Form.Group controlId="nivelMin" className="col-sm">
+                                        <Form.Label>Nivel-Min:</Form.Label>
+                                        <Form.Control as="select" onChange={this.levelMinController}>
+                                            <option value='1'>1</option>
+                                            <option value='2'>2</option>
+                                            <option value='3'>3</option>
+                                            <option value='4'>4</option>
+                                            <option value='5'>5</option>
+                                            <option value='6'>6</option>
+                                            <option value='7'>7</option>
+                                            <option value='8'>8</option>
+                                            <option value='9'>9</option>
+                                            <option value='10'>10</option>
+                                            <option value='11'>11</option>
+                                            <option value='12'>12</option>
+                                            <option value='13'>13</option>
+                                            <option value='14'>14</option>
+                                            <option value='15'>15</option>
+                                            <option value='16'>16</option>
+                                            <option value='17'>17</option>
+                                            <option value='18'>18</option>
+                                            <option value='19'>19</option>
+                                            <option value='20'>20</option>
+                                        </Form.Control>
+                                    </Form.Group>
+                                    <Form.Group controlId="nivelMax" className="col-sm">
+                                        <Form.Label>Nivel-Max</Form.Label>
+                                        <Form.Control as="select" onChange={this.levelMaxController}>
+                                            <option value='1'>1</option>
+                                            <option value='2'>2</option>
+                                            <option value='3'>3</option>
+                                            <option value='4'>4</option>
+                                            <option value='5'>5</option>
+                                            <option value='6'>6</option>
+                                            <option value='7'>7</option>
+                                            <option value='8'>8</option>
+                                            <option value='9'>9</option>
+                                            <option value='10'>10</option>
+                                            <option value='11'>11</option>
+                                            <option value='12'>12</option>
+                                            <option value='13'>13</option>
+                                            <option value='14'>14</option>
+                                            <option value='15'>15</option>
+                                            <option value='16'>16</option>
+                                            <option value='17'>17</option>
+                                            <option value='18'>18</option>
+                                            <option value='19'>19</option>
+                                            <option value='20'>20</option>
+                                        </Form.Control>
+                                    </Form.Group>
+                                </div>
+                            </div>
+                            <Form.Group controlId="raza" className="col-sm">
+                                <Form.Label>Raza:</Form.Label>
+                                <Form.Control as="select" onChange={this.raceController}>
+                                    <option value='humano'>Humano</option>
+                                    <option value='elfo'>Elfo</option>
+                                    <option value='enano'>Enano</option>
+                                    <option value='gnomo'>Gnomo</option>
+                                    <option value='mediano'>Mediano</option>
+                                    <option value='semielfo'>Semielfo</option>
+                                    <option value='semiorco'>Semiorco</option>
+                                </Form.Control>
+                            </Form.Group>
+                            <Form.Group controlId="clase" className="col-sm">
+                                <Form.Label>Clase</Form.Label>
+                                <Form.Control as="select" onChange={this.classController}>
+                                    <option value='barbaro'>Bárbaro</option>
+                                    <option value='bardo'>Bardo</option>
+                                    <option value='clerigo'>Clérigo</option>
+                                    <option value='druida'>Druida</option>
+                                    <option value='explorador'>Explorador</option>
+                                    <option value='guerrero'>Guerrero</option>
+                                    <option value='hechicero'>Hechicero</option>
+                                    <option value='mago'>Mago</option>
+                                    <option value='monje'>Monje</option>
+                                    <option value='paladin'>Paladin</option>
+                                    <option value='picaro'>Pícaro</option>
+                                </Form.Control>
+                            </Form.Group>
+                            <Form.Group controlId="clase" className="col-sm">
+                                <Form.Label>Clase</Form.Label>
+                                <Form.Control as="select" onChange={this.sortController}>
+                                    <option value='recent'>Nuevos</option>
+                                    <option value='old'>Antiguos</option>
+
+                                </Form.Control>
+                            </Form.Group>
+                        </div>
+                        <div className="row">
+                            <Button onClick={this.clickController} value="filter" type="submit" className="col-sm mr-2" size="lg">Filtrar</Button>
+                            <Button onClick={this.clickController} value="erase" variant="secondary" type="submit" className="col-sm ml-2" size="lg">Borrar filtros</Button>
+                        </div>
+                    </div>
+                </Form>,
+            renderButton:
+                <>
+                    <Button onClick={this.clickController} value="openFilters" type="submit" className="col-sm mr-2" size="lg">Filtrar</Button>
+                </>,
             arrayToShow:
                 <>
                     <div className="lds-circle col-lg-3 col-md-4 col-sm-6 mb-4"><div></div></div>
@@ -39,6 +162,54 @@ export default class NpcList extends Component {
     }
     componentDidMount() {
         this.pnjCall(this.queryBuilder(this.state.paginationPage));
+        this.setState({ bottomPage: this.state.renderButton });
+    }
+    nameController = (event) => {
+        this.setState({ formName: event.target.value });
+    }
+    levelMinController = (event) => {
+        this.setState({ formLevelMin: event.target.value });
+    }
+    levelMaxController = (event) => {
+        this.setState({ formLevelMax: event.target.value });
+    }
+    raceController = (event) => {
+        this.setState({ formRace: event.target.value });
+    }
+    classController = (event) => {
+        this.setState({ formRace: event.target.value });
+    }
+    sortController = (event) => {
+        this.setState({ formRace: event.target.value });
+    }
+    clickController = (event) => {
+        console.log(event.target.value);
+        if (event.target.value === 'filter') {
+            this.pnjCall(this.queryBuilder(this.state.paginationPage));
+        } else if (event.target.value === 'openFilters') {
+            this.setState({
+                bottomPage: this.state.renderForm,
+                formName: '',
+                formRace: 'humano',
+                formClass: 'barbaro',
+                formLevelMax: 1,
+                formLevelMin: 1,
+                formSort: 'recent',
+            });
+        } else {
+            this.setState({
+                bottomPage: this.state.renderButton,
+                formName: undefined,
+                formRace: undefined,
+                formClass: undefined,
+                formLevelMax: undefined,
+                formLevelMin: undefined,
+                formSort: undefined,
+            });
+        }
+    }
+    submitController = (event) => {
+        event.preventDefault();
     }
     pnjCall = async (qstring) => {
         try {
@@ -50,6 +221,9 @@ export default class NpcList extends Component {
                     arrayVariable[i] = <PnjCard key={i} data={this.state.responseState.data[i]} />
                 }
                 this.setState({ arrayToShow: arrayVariable });
+            }
+            else if (this.state.responseState.data.length === 0) {
+                this.setState({ arrayToShow: this.state.noResults });
             }
         } catch (err) {
             console.log(err);
@@ -193,6 +367,8 @@ export default class NpcList extends Component {
                             </button>
                         </li>
                     </ul>
+                    <hr />
+                    {this.state.bottomPage}
                 </div>
                 {/* <!-- /.container --> */}
             </>
