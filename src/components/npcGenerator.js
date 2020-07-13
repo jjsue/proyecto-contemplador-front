@@ -1,7 +1,7 @@
 import './style/npcGenerator.css'
 import React, { Component } from "react";
 import { Form, Button } from 'react-bootstrap';
-import { characterCreatorCall } from './calls/api-calls';
+import { characterCreatorCall, characterSaveCall } from './calls/api-calls';
 import ShowNPC from './showNPC';
 export default class NpcGenerator extends Component {
     constructor(props) {
@@ -13,6 +13,8 @@ export default class NpcGenerator extends Component {
             formDados: '2d6',
             renderingNow: '',
             title: 'Generador de NPC',
+            saveResponse: null,
+            characterName: '',
             form:
                 <>
                     <Form onSubmit={this.submitController}>
@@ -90,7 +92,16 @@ export default class NpcGenerator extends Component {
             bottomChildren:
                 <>
                     <div className="col-md">
-                        <Button variant="primary" size="lg" block>Guardar</Button>{' '}
+                        <Form onSubmit={this.submitSave}>
+                            <div className="row">
+                                <Form.Group className="col-sm">
+                                    <Form.Control size="lg" type="text" placeholder="Nombre del personaje" onChange={this.onChangeSave} />
+                                </Form.Group>
+                            </div>
+                            <div className="row">
+                                <Button type="submit" size="lg" className="col-sm">Guardar</Button>
+                            </div>
+                        </Form>
                     </div>
                     <div className="col-md">
                         <Button variant="warning" size="lg" block onClick={this.onClickChildrenReturn}>Crear otro</Button>{' '}
@@ -130,11 +141,57 @@ export default class NpcGenerator extends Component {
             console.log(err);
         }
     }
+    submitSave = async (event) => {
+        event.preventDefault();
+        try {
+            const dataToSend = this.state.responseState.data.createdCharacter;
+            dataToSend.name = this.state.characterName;
+            this.setState({ saveResponse: await characterSaveCall(dataToSend) });
+            if (this.state.saveResponse.status === 201) {
+                this.setState({
+                    bottomChildren:
+                        <>
+                            <div className="col-md">
+                                <Form onSubmit={this.submitSave}>
+                                    <div className="row">
+                                        <Form.Group className="col-sm">
+                                            <Form.Control size="lg" type="text" placeholder="Nombre del personaje" disabled  onChange={this.onChangeSave} />
+                                        </Form.Group>
+                                    </div>
+                                    <div className="row">
+                                        <Button type="submit" size="lg" className="col-sm disabled">Guardado</Button>
+                                    </div>
+                                </Form>
+                            </div>
+                            <div className="col-md">
+                                <Button variant="warning" size="lg" block onClick={this.onClickChildrenReturn}>Crear otro</Button>{' '}
+                            </div>
+                        </>
+
+                })
+            } else {
+                alert("Ha ocurrido un error, intentelo mas tarde");
+            }
+
+        } catch (err) {
+            console.log(err);
+        }
+    }
+    onChangeSave = (event) => {
+        this.setState({ characterName: event.target.value });
+    }
     evaluator = (responseData) => {
         if (responseData.status === 200) {
             this.setState({
                 renderingNow: <ShowNPC data={responseData.data.createdCharacter} bottom={this.state.bottomChildren} />,
                 title: "Tu personaje",
+            });
+        }
+    }
+    componentDidUpdate(prevProps, prevState) {
+        if (prevState.bottomChildren !== this.state.bottomChildren) {
+            this.setState({
+                renderingNow: <ShowNPC data={this.state.responseState.data.createdCharacter} bottom={this.state.bottomChildren} />,
             });
         }
     }

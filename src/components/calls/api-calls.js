@@ -78,4 +78,39 @@ async function characterCreatorCall(level, clase, raza, dices) {
         })
 }
 
-export { loginCall, registerCall, publicCharacterCall, characterCreatorCall };
+async function characterSaveCall (character) {
+    return axios({
+        method: 'POST',
+        url: `${backEnd}/api/savecharacter`,
+        // headers: {
+        // },
+        data: {
+            name: character.name,
+            clase: character.clase,
+            nivel: character.nivel,
+            raza: character.raza,
+            especial: character.especial,
+            tam: character.tam,
+            salvaciones: character.salvaciones,
+            caracteristicas: character.caracteristicas,
+            habilidades: character.habilidades,
+            equipo: character.equipo,
+            ataqueBase: character.ataqueBase,
+            ataques: character.ataques,
+            ca: character.ca,
+            velocidad: character.velocidad,
+            pg: character.pg,
+            alineamiento: character.alineamiento,
+            conjuros: character.conjuros,
+        },
+        withCredentials: true,
+    })
+        .then(function (response) {
+            return response;
+        })
+        .catch(function (error) {
+            return error.response;
+        })
+}
+
+export { loginCall, registerCall, publicCharacterCall, characterCreatorCall, characterSaveCall };
