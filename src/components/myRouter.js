@@ -7,6 +7,7 @@ import Home from './home';
 import Register from './register';
 import Login from './login';
 import NpcList from './npcList';
+import NpcParentList from './npcParentList';
 import NpcGenerator from './npcGenerator';
 //Cookies
 import Cookies from 'universal-cookie';
@@ -68,14 +69,13 @@ export default class MyRouter extends Component {
                     <Switch>
                         <Route path="/npcgenerator" component={NpcGenerator} />
                         <Route exact path="/" component={Home} />
-                        {/* <Route path="/ads/:adId" component={DetailComponent} /> */}
                         <Route path="/register" component={Register} />
                         <Route path='/login' //De esta forma puedo pasar las props que quiera al componente login
                             render={(props) => (
                                 <Login {...props} parentLogin={this.handleLogin} />
                             )} />
-                        <Route path="/npclist" component={NpcList} />
-                        <Route path="/npclist:id" component={NpcList} />
+                        <Route exact path="/npclist" component={NpcList} />
+                        <Route path="/npclist/:npcId" component={NpcParentList} />
                     </Switch>
                 </Router>
             </>
