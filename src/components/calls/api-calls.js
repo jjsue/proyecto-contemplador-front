@@ -74,6 +74,21 @@ async function uniqueCharacterCall(characterId) {
             return error.response;
         })
 }
+async function retrieveOwn() {
+    return axios({
+        method: 'POST',
+        url: `${backEnd}/api/character`,
+        // headers: {
+        // },
+        withCredentials: true,
+    })
+        .then(function (response) {
+            return response;
+        })
+        .catch(function (error) {
+            return error.response;
+        })
+}
 async function characterCreatorCall(level, clase, raza, dices) {
     return axios({
         method: 'POST',
@@ -131,4 +146,4 @@ async function characterSaveCall (character) {
         })
 }
 
-export { loginCall, registerCall, publicCharacterCall, characterCreatorCall, characterSaveCall, uniqueCharacterCall };
+export { loginCall, registerCall, publicCharacterCall, characterCreatorCall, characterSaveCall, uniqueCharacterCall, retrieveOwn };

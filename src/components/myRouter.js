@@ -9,6 +9,7 @@ import Login from './login';
 import NpcList from './npcList';
 import NpcParentList from './npcParentList';
 import NpcGenerator from './npcGenerator';
+import Profile from './profile';
 //Cookies
 import Cookies from 'universal-cookie';
 export default class MyRouter extends Component {
@@ -76,6 +77,7 @@ export default class MyRouter extends Component {
                             )} />
                         <Route exact path="/npclist" component={NpcList} />
                         <Route path="/npclist/:npcId" component={NpcParentList} />
+                        <Route exact path="/profile" component={Profile} />
                     </Switch>
                 </Router>
             </>

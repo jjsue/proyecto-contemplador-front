@@ -155,7 +155,7 @@ export default class NpcGenerator extends Component {
                                 <Form onSubmit={this.submitSave}>
                                     <div className="row">
                                         <Form.Group className="col-sm">
-                                            <Form.Control size="lg" type="text" placeholder="Nombre del personaje" disabled  onChange={this.onChangeSave} />
+                                            <Form.Control size="lg" type="text" placeholder="Nombre del personaje" disabled onChange={this.onChangeSave} />
                                         </Form.Group>
                                     </div>
                                     <div className="row">
@@ -186,7 +186,7 @@ export default class NpcGenerator extends Component {
                 renderingNow: <ShowNPC data={responseData.data.createdCharacter} bottom={this.state.bottomChildren} />,
                 title: "Tu personaje",
             });
-        }
+        } //Hay que controlar fallos por aqui
     }
     componentDidUpdate(prevProps, prevState) {
         if (prevState.bottomChildren !== this.state.bottomChildren) {

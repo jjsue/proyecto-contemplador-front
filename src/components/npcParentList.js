@@ -1,6 +1,5 @@
 import './style/npcGenerator.css'
 import React, { Component } from "react";
-import { Form, Button } from 'react-bootstrap';
 import { uniqueCharacterCall } from './calls/api-calls';
 import ShowNPC from './showNPC';
 export default class NpcParentList extends Component {
