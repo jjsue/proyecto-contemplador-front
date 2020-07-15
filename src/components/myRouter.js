@@ -10,6 +10,7 @@ import NpcList from './npcList';
 import NpcParentList from './npcParentList';
 import NpcGenerator from './npcGenerator';
 import Profile from './profile';
+import Exit from './exit';
 //Cookies
 import Cookies from 'universal-cookie';
 export default class MyRouter extends Component {
@@ -38,14 +39,33 @@ export default class MyRouter extends Component {
         }
     }
     handleLogin = (event) => {
-        this.setState({ username: this.state.cookieHandler.get('userName') });
-        this.setState({
-            showingNow:
-                <NavDropdown title={this.state.cookieHandler.get('userName')} id="basic-nav-dropdown">
-                    <Link to="/profile" className="animate slideIn dropdown-item">Perfil</Link>
-                    <Link to="/exit" className="animate slideIn dropdown-item">Cerrar sesión</Link>
-                </NavDropdown>
-        });
+        // this.setState({ username: this.state.cookieHandler.get('userName') });
+        // this.setState({
+        //     showingNow:
+        //         <NavDropdown title={this.state.cookieHandler.get('userName')} id="basic-nav-dropdown">
+        //             <Link to="/profile" className="animate slideIn dropdown-item">Perfil</Link>
+        //             <Link to="/exit" className="animate slideIn dropdown-item">Cerrar sesión</Link>
+        //         </NavDropdown>
+        // });
+        const userNameCookie = this.state.cookieHandler.get('userName');
+        if (userNameCookie === undefined) {
+            this.setState({
+                showingNow:
+                    <NavDropdown title="Usuario" id="basic-nav-dropdown">
+                        <Link to="/login" className="animate slideIn dropdown-item">Iniciar sesión</Link>
+                        <Link to="/register" className="animate slideIn dropdown-item">Registrarse</Link>
+                    </NavDropdown>,
+            })
+        } else {
+            this.setState({
+                showingNow:
+                    <NavDropdown title={userNameCookie} id="basic-nav-dropdown">
+                        <Link to="/profile" className="animate slideIn dropdown-item">Perfil</Link>
+                        <Link to="/exit" className="animate slideIn dropdown-item">Cerrar sesión</Link>
+                    </NavDropdown>,
+                username: userNameCookie,
+            });
+        }
     }
     render() {
         return (
@@ -78,6 +98,10 @@ export default class MyRouter extends Component {
                         <Route exact path="/npclist" component={NpcList} />
                         <Route path="/npclist/:npcId" component={NpcParentList} />
                         <Route exact path="/profile" component={Profile} />
+                        <Route path='/exit' //De esta forma puedo pasar las props que quiera al componente login
+                            render={(props) => (
+                                <Exit {...props} parentLogin={this.handleLogin} />
+                            )} />
                     </Switch>
                 </Router>
             </>

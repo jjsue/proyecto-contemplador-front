@@ -202,4 +202,19 @@ async function characterDelete (characterId) {
             return error.response;
         })
 }
-export { loginCall, registerCall, publicCharacterCall, characterCreatorCall, characterSaveCall, uniqueCharacterCall, retrieveOwn, obtainCharacterIsPublic, changeCharacterPublic, characterDelete };
+async function logOutCall () {
+    return axios({
+        method: 'POST',
+        url: `${backEnd}/api/logout`,
+        // headers: {
+        // },
+        withCredentials: true,
+    })
+        .then(function (response) {
+            return response;
+        })
+        .catch(function (error) {
+            return error.response;
+        })
+}
+export { loginCall, registerCall, publicCharacterCall, characterCreatorCall, characterSaveCall, uniqueCharacterCall, retrieveOwn, obtainCharacterIsPublic, changeCharacterPublic, characterDelete, logOutCall };
