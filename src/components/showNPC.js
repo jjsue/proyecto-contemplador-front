@@ -283,6 +283,7 @@ export default class ShowNPC extends Component {
                     <div className="row mb-2">
                         {this.props.bottom}
                     </div>
+                    {this.props.bottomFoot}
                 </div>
             </>
         )

@@ -1,8 +1,8 @@
 import './style/npcGenerator.css'
 import React, { Component } from "react";
-import { uniqueCharacterCall, obtainCharacterIsPublic, changeCharacterPublic } from './calls/api-calls';
+import { uniqueCharacterCall, obtainCharacterIsPublic, changeCharacterPublic, characterDelete } from './calls/api-calls';
 import ShowNPC from './showNPC';
-import { Form, Button } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 export default class NpcParentList extends Component {
     constructor(props) {
         super(props);
@@ -11,8 +11,10 @@ export default class NpcParentList extends Component {
             renderingNow: null,
             bottomState: null,
             bottomRender: null,
+            bottomBottomRender: null,
             title: null,
             id: null,
+            eraseButton: 'Borrar',
         }
     }
     async componentDidMount() {
@@ -26,6 +28,19 @@ export default class NpcParentList extends Component {
         });
     }
     componentDidUpdate(prevprops, prevState) {
+        if (prevState.eraseButton !== this.state.eraseButton) {
+            this.setState({
+                bottomBottomRender:
+                    <div className="row mb-2">
+                        <Button value="a" variant="danger" size="lg" block onClick={this.eraseButtonFn}>{this.state.eraseButton}</Button>{' '}
+                    </div>,
+            });
+        }
+        if (prevState.bottomBottomRender !== this.state.bottomBottomRender) { //Aqui ya rerenderizamos el boton de borrado
+            this.setState({
+                renderingNow: <ShowNPC data={this.state.responseState.data} bottom={this.state.bottomRender} bottomFoot={this.state.bottomBottomRender} />,
+            });
+        }
         if (prevState.bottomState !== this.state.bottomState) { //Controlamos el bottomResponse
             if (this.state.bottomState.status === 200) {
                 if (this.state.bottomState.data.result === true) {
@@ -39,7 +54,12 @@ export default class NpcParentList extends Component {
                                     <Button value="makePublic" variant="warning" size="lg" block disabled onClick={this.makePublicOrPrivate}>Hacer público</Button>{' '}
                                 </div>
                             </>,
+                        bottomBottomRender:
+                            <div className="row mb-2">
+                                <Button value="a" variant="danger" size="lg" block onClick={this.eraseButtonFn}>{this.state.eraseButton}</Button>{' '}
+                            </div>
                     });
+
                 } else if (this.state.bottomState.data.result === false) {
                     this.setState({
                         bottomRender:
@@ -51,17 +71,21 @@ export default class NpcParentList extends Component {
                                     <Button value="makePublic" variant="warning" size="lg" block onClick={this.makePublicOrPrivate}>Hacer público</Button>{' '}
                                 </div>
                             </>,
+                        bottomBottomRender:
+                            <div className="row mb-2">
+                                <Button value="a" variant="danger" size="lg" block onClick={this.eraseButtonFn}>{this.state.eraseButton}</Button>{' '}
+                            </div>,
                     });
                 } else {
-                    this.setState({bottomRender: null});
+                    this.setState({ bottomRender: null });
                 }
             }
         }
-        if (prevState.responseState !== this.state.responseState || this.state.reRenderChildren) {
+        if (prevState.responseState !== this.state.responseState) {
             if (this.state.responseState.status === 200) {
                 this.setState({
                     title: this.state.responseState.data.name,
-                    renderingNow: <ShowNPC data={this.state.responseState.data} bottom={this.state.bottomRender} />,
+                    renderingNow: <ShowNPC data={this.state.responseState.data} bottom={this.state.bottomRender} bottomFoot={this.state.bottomBottomRender} />,
                 });
             }
             else if (this.state.responseState.status === 401) {
@@ -76,7 +100,7 @@ export default class NpcParentList extends Component {
         }
         if (prevState.bottomRender !== this.state.bottomRender) {
             this.setState({
-                renderingNow: <ShowNPC data={this.state.responseState.data} bottom={this.state.bottomRender} />,
+                renderingNow: <ShowNPC data={this.state.responseState.data} bottom={this.state.bottomRender} bottomFoot={this.state.bottomBottomRender} />,
             });
         }
     }
@@ -95,18 +119,84 @@ export default class NpcParentList extends Component {
         });
         if (event.target.value === 'makePublic') {
             const changer = await changeCharacterPublic('yes', this.state.id);
-            if (changer.status === 201){
-                this.setState({bottomState: await obtainCharacterIsPublic(this.state.id)});
+            if (changer.status === 201) {
+                this.setState({ bottomState: await obtainCharacterIsPublic(this.state.id) });
             } else {
                 alert("Ha ocurrido un error, vuelva a intentarlo.");
             }
         }
         else if (event.target.value === 'makePrivate') {
             const changer = await changeCharacterPublic('no', this.state.id);
-            if (changer.status === 201){
-                this.setState({bottomState: await obtainCharacterIsPublic(this.state.id)});
+            if (changer.status === 201) {
+                this.setState({ bottomState: await obtainCharacterIsPublic(this.state.id) });
             } else {
                 alert("Ha ocurrido un error, vuelva a intentarlo.");
+            }
+        }
+    }
+    eraseButtonFn = async (event) => {
+        if (event.target.value === "a") {
+            event.target.value = "b";
+            this.setState({
+                eraseButton: '¿Seguro?',
+            });
+        }
+        else if (event.target.value === "b") {
+            event.target.value = "c";
+            this.setState({
+                eraseButton: 'Si le das otra vez tu personaje está muerto'
+            });
+        }
+        else if (event.target.value === "c") {
+            const borradoDePersonaje = await characterDelete(this.state.id)
+            if (borradoDePersonaje.status === 204) {
+                this.setState({
+                    bottomRender:
+                        <>
+                            <div className="col-md">
+                                <Button variant="primary" size="lg" block disabled onClick={this.makePublicOrPrivate}>Hacer privado</Button>{' '}
+                            </div>
+                            <div className="col-md">
+                                <Button variant="warning" size="lg" block disabled onClick={this.makePublicOrPrivate}>Hacer público</Button>{' '}
+                            </div>
+                        </>,
+                    bottomBottomRender:
+                        <div className="row mb-2">
+                            <Button value="a" variant="danger" size="lg" block disabled onClick={this.eraseButtonFn}>Un minuto de silencio</Button>{' '}
+                        </div>,
+                });
+            } else if (borradoDePersonaje.status === 402){
+                this.setState({
+                    bottomRender:
+                        <>
+                            <div className="col-md">
+                                <Button variant="primary" size="lg" block disabled onClick={this.makePublicOrPrivate}>Hacer privado</Button>{' '}
+                            </div>
+                            <div className="col-md">
+                                <Button variant="warning" size="lg" block disabled onClick={this.makePublicOrPrivate}>Hacer público</Button>{' '}
+                            </div>
+                        </>,
+                    bottomBottomRender:
+                        <div className="row mb-2">
+                            <Button value="a" variant="danger" size="lg" block disabled onClick={this.eraseButtonFn}>No tienes permiso</Button>{' '}
+                        </div>,
+                });
+            } else {
+                this.setState({
+                    bottomRender:
+                        <>
+                            <div className="col-md">
+                                <Button variant="primary" size="lg" block disabled onClick={this.makePublicOrPrivate}>Hacer privado</Button>{' '}
+                            </div>
+                            <div className="col-md">
+                                <Button variant="warning" size="lg" block disabled onClick={this.makePublicOrPrivate}>Hacer público</Button>{' '}
+                            </div>
+                        </>,
+                    bottomBottomRender:
+                        <div className="row mb-2">
+                            <Button value="a" variant="danger" size="lg" block disabled onClick={this.eraseButtonFn}>Ha ocurrido algún tipo de error</Button>{' '}
+                        </div>,
+                });
             }
         }
     }

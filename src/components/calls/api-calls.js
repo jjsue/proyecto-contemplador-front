@@ -184,4 +184,22 @@ async function changeCharacterPublic (makePublic, characterId) {
             return error.response;
         })
 }
-export { loginCall, registerCall, publicCharacterCall, characterCreatorCall, characterSaveCall, uniqueCharacterCall, retrieveOwn, obtainCharacterIsPublic, changeCharacterPublic };
+async function characterDelete (characterId) {
+    return axios({
+        method: 'DELETE',
+        url: `${backEnd}/api/makepublic`,
+        // headers: {
+        // },
+        data: {
+            character: characterId,
+        },
+        withCredentials: true,
+    })
+        .then(function (response) {
+            return response;
+        })
+        .catch(function (error) {
+            return error.response;
+        })
+}
+export { loginCall, registerCall, publicCharacterCall, characterCreatorCall, characterSaveCall, uniqueCharacterCall, retrieveOwn, obtainCharacterIsPublic, changeCharacterPublic, characterDelete };
