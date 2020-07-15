@@ -6,6 +6,7 @@ export default class Profile extends Component {
         super(props);
         this.state = {
             responseState: null,
+            responseStateIsPublic: null,
             arrayToShow: null,
             username: null,
         }

@@ -1,6 +1,6 @@
 const axios = require('axios').default;
 
-const backEnd = 'http://213.194.128.57:3000'
+const backEnd = 'http://localhost:3000'
 
 async function loginCall(user, pass) {
     return axios({
@@ -146,4 +146,42 @@ async function characterSaveCall (character) {
         })
 }
 
-export { loginCall, registerCall, publicCharacterCall, characterCreatorCall, characterSaveCall, uniqueCharacterCall, retrieveOwn };
+async function obtainCharacterIsPublic (characterId) {
+    return axios({
+        method: 'POST',
+        url: `${backEnd}/api/makepublic`,
+        // headers: {
+        // },
+        data: {
+            character: characterId
+        },
+        withCredentials: true,
+    })
+        .then(function (response) {
+            return response;
+        })
+        .catch(function (error) {
+            return error.response;
+        })
+}
+
+async function changeCharacterPublic (makePublic, characterId) {
+    return axios({
+        method: 'PUT',
+        url: `${backEnd}/api/makepublic`,
+        // headers: {
+        // },
+        data: {
+            public: makePublic,
+            character: characterId,
+        },
+        withCredentials: true,
+    })
+        .then(function (response) {
+            return response;
+        })
+        .catch(function (error) {
+            return error.response;
+        })
+}
+export { loginCall, registerCall, publicCharacterCall, characterCreatorCall, characterSaveCall, uniqueCharacterCall, retrieveOwn, obtainCharacterIsPublic, changeCharacterPublic };
