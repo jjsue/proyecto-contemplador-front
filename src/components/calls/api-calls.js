@@ -217,4 +217,24 @@ async function logOutCall () {
             return error.response;
         })
 }
-export { loginCall, registerCall, publicCharacterCall, characterCreatorCall, characterSaveCall, uniqueCharacterCall, retrieveOwn, obtainCharacterIsPublic, changeCharacterPublic, characterDelete, logOutCall };
+async function delUserCall (user, email, password) {
+    return axios({
+        method: 'DELETE',
+        url: `${backEnd}/api/deleteuser`,
+        // headers: {
+        // },
+        data: {
+            user,
+            email,
+            password,
+        },
+        withCredentials: true,
+    })
+        .then(function (response) {
+            return response;
+        })
+        .catch(function (error) {
+            return error.response;
+        })
+}
+export { loginCall, registerCall, publicCharacterCall, characterCreatorCall, characterSaveCall, uniqueCharacterCall, retrieveOwn, obtainCharacterIsPublic, changeCharacterPublic, characterDelete, logOutCall, delUserCall };

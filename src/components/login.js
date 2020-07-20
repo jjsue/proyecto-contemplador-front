@@ -61,10 +61,6 @@ export default class Login extends Component {
                                                     <label htmlFor="inputPassword">Palabra secreta</label>
                                                 </div>
                                                 {this.state.redirect}
-                                                {/* <div className="custom-control custom-checkbox mb-3">
-                                                    <input type="checkbox" className="custom-control-input" id="customCheck1" />
-                                                    <label className="custom-control-label" htmlFor="customCheck1">Recordar</label>
-                                                </div> */}
                                                 <button className="btn btn-lg btn-primary btn-block btn-login text-uppercase font-weight-bold mb-2" type="submit">Lanzar conjuro</button>
                                                 <div className="text-center">
                                                     <a className="small" href="/">¿Contraseña olvidada? Pide ayuda a un clérigo</a></div>
