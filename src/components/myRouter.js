@@ -12,6 +12,7 @@ import NpcGenerator from './npcGenerator';
 import Profile from './profile';
 import Exit from './exit';
 import DeleteUser from './deleteUser';
+import Recover from './recover';
 //Cookies
 import Cookies from 'universal-cookie';
 export default class MyRouter extends Component {
@@ -84,7 +85,7 @@ export default class MyRouter extends Component {
                         <Route path="/npcgenerator" component={NpcGenerator} />
                         <Route exact path="/" component={Home} />
                         <Route path="/register" component={Register} />
-                        <Route path='/login' //De esta forma puedo pasar las props que quiera al componente login
+                        <Route path='/login'
                             render={(props) => (
                                 <Login {...props} parentLogin={this.handleLogin} />
                             )} />
@@ -96,6 +97,7 @@ export default class MyRouter extends Component {
                                 <Exit {...props} parentLogin={this.handleLogin} />
                             )} />
                         <Route exact path="/deleteuser" component={DeleteUser} />
+                        <Route exact path="/recover" component={Recover} />
                     </Switch>
                 </Router>
             </>

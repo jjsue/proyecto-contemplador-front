@@ -12,12 +12,12 @@ export default class Home extends Component {
     render() {
         return (
             <>
-                <header class="masthead">
-                    <div class="container h-100">
-                        <div class="row h-100 align-items-center">
-                            <div class="col-12 text-center">
-                                <h1 class="font-weight-light">Proyecto contemplador</h1>
-                                {/* <p class="lead">Una aplicación web para los mas roleros</p> */}
+                <header className="masthead">
+                    <div className="container h-100">
+                        <div className="row h-100 align-items-center">
+                            <div className="col-12 text-center">
+                                <h1 className="font-weight-light">Proyecto contemplador</h1>
+                                {/* <p className="lead">Una aplicación web para los mas roleros</p> */}
                             </div>
                         </div>
                     </div>

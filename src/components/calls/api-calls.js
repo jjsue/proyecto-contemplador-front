@@ -237,4 +237,42 @@ async function delUserCall (user, email, password) {
             return error.response;
         })
 }
-export { loginCall, registerCall, publicCharacterCall, characterCreatorCall, characterSaveCall, uniqueCharacterCall, retrieveOwn, obtainCharacterIsPublic, changeCharacterPublic, characterDelete, logOutCall, delUserCall };
+async function recoverPasswordCall (mail) {
+    return axios({
+        method: 'POST',
+        url: `${backEnd}/api/recover`,
+        // headers: {
+        // },
+        data: {
+            mail
+        },
+        withCredentials: false,
+    })
+        .then(function (response) {
+            return response;
+        })
+        .catch(function (error) {
+            return error.response;
+        })
+}
+async function changePasswordCall (mail, password, code) {
+    return axios({
+        method: 'PUT',
+        url: `${backEnd}/api/recover`,
+        // headers: {
+        // },
+        data: {
+            mail,
+            code,
+            password,
+        },
+        withCredentials: false,
+    })
+        .then(function (response) {
+            return response;
+        })
+        .catch(function (error) {
+            return error.response;
+        })
+}
+export { loginCall, registerCall, publicCharacterCall, characterCreatorCall, characterSaveCall, uniqueCharacterCall, retrieveOwn, obtainCharacterIsPublic, changeCharacterPublic, characterDelete, logOutCall, delUserCall, recoverPasswordCall, changePasswordCall };

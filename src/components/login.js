@@ -1,6 +1,6 @@
 import './style/login.css';
 import React, { Component } from "react";
-import { loginCall } from './calls/api-calls';
+import { loginCall, recoverPasswordCall } from './calls/api-calls';
 import { BrowserRouter as Route, Redirect } from "react-router-dom";
 export default class Login extends Component {
     constructor(props) {
@@ -11,6 +11,8 @@ export default class Login extends Component {
             responseState: null,
             responseMessage: '',
             redirect: null,
+            innerButton: "Lanzar conjuro",
+            recoverMessage: null,
         }
     }
     changeHandlerMail = (event) => {
@@ -19,8 +21,38 @@ export default class Login extends Component {
     changeHandlerPass = (event) => {
         this.setState({ passwordValue: event.target.value });
     }
+    recoverPass = async (event) => {
+        event.preventDefault();
+        this.setState({ innerButton: <div className="lds-ellipsis"><div></div><div></div><div></div><div></div></div> });
+        const response = await recoverPasswordCall(this.state.mailValue);
+        console.log(response);
+        if (response.status === 200) {
+            this.setState({
+                recoverMessage:
+                    <div className="alert alert-primary" role="alert">
+                        Correo enviado, en unos segundos te redirijo a la página de recuperación de contraseña.
+                    </div>,
+                innerButton: "Lanzar conjuro"
+            });
+            setTimeout(() => {
+                this.setState({
+                    redirect:
+                        <Redirect to="/recover" />
+                })
+            }, 5000);
+        } else {
+            this.setState({
+                recoverMessage:
+                    <div className="alert alert-danger" role="alert">
+                        {response.data.result}
+                    </div>,
+                innerButton: "Lanzar conjuro"
+            });
+        }
+    }
     submitHandler = async (event) => {
         event.preventDefault();
+        this.setState({ innerButton: <div className="lds-ellipsis"><div></div><div></div><div></div><div></div></div> });
         this.setState({ responseState: await loginCall(this.state.mailValue, this.state.passwordValue) });
         if ('authToken' in this.state.responseState && 'userName' in this.state.responseState) {
             this.props.parentLogin();
@@ -33,7 +65,8 @@ export default class Login extends Component {
                 redirect:
                     <div className="alert alert-warning" role="alert">
                         Ha ocurrido un error
-                    </div>
+                    </div>,
+                innerButton: "Lanzar conjuro",
             });
         }
     }
@@ -61,9 +94,10 @@ export default class Login extends Component {
                                                     <label htmlFor="inputPassword">Palabra secreta</label>
                                                 </div>
                                                 {this.state.redirect}
-                                                <button className="btn btn-lg btn-primary btn-block btn-login text-uppercase font-weight-bold mb-2" type="submit">Lanzar conjuro</button>
+                                                <button className="btn btn-lg btn-primary btn-block btn-login text-uppercase font-weight-bold mb-2" type="submit">{this.state.innerButton}</button>
                                                 <div className="text-center">
-                                                    <a className="small" href="/">¿Contraseña olvidada? Pide ayuda a un clérigo</a></div>
+                                                    <a className="small" href="/" onClick={this.recoverPass}>¿Contraseña olvidada? Pon tu correo y haz clic aquí</a></div>
+                                                    {this.state.recoverMessage}
                                             </form>
                                         </div>
                                     </div>
