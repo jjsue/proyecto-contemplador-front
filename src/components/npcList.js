@@ -23,6 +23,7 @@ export default class NpcList extends Component {
                                     <Form.Group controlId="nivelMin" className="col-sm">
                                         <Form.Label>Nivel-Min:</Form.Label>
                                         <Form.Control as="select" onChange={this.levelMinController}>
+                                            <option value=''>-</option>
                                             <option value='1'>1</option>
                                             <option value='2'>2</option>
                                             <option value='3'>3</option>
@@ -48,6 +49,7 @@ export default class NpcList extends Component {
                                     <Form.Group controlId="nivelMax" className="col-sm">
                                         <Form.Label>Nivel-Max</Form.Label>
                                         <Form.Control as="select" onChange={this.levelMaxController}>
+                                            <option value=''>-</option>
                                             <option value='1'>1</option>
                                             <option value='2'>2</option>
                                             <option value='3'>3</option>
@@ -75,6 +77,7 @@ export default class NpcList extends Component {
                             <Form.Group controlId="raza" className="col-sm">
                                 <Form.Label>Raza:</Form.Label>
                                 <Form.Control as="select" onChange={this.raceController}>
+                                    <option value=''>-</option>
                                     <option value='humano'>Humano</option>
                                     <option value='elfo'>Elfo</option>
                                     <option value='enano'>Enano</option>
@@ -87,6 +90,7 @@ export default class NpcList extends Component {
                             <Form.Group controlId="clase" className="col-sm">
                                 <Form.Label>Clase</Form.Label>
                                 <Form.Control as="select" onChange={this.classController}>
+                                    <option value=''>-</option>
                                     <option value='barbaro'>Bárbaro</option>
                                     <option value='bardo'>Bardo</option>
                                     <option value='clerigo'>Clérigo</option>
@@ -165,7 +169,7 @@ export default class NpcList extends Component {
         this.setState({ formRace: event.target.value });
     }
     classController = (event) => {
-        this.setState({ formRace: event.target.value });
+        this.setState({ formClass: event.target.value });
     }
     sortController = (event) => {
         this.setState({ formRace: event.target.value });
@@ -177,10 +181,10 @@ export default class NpcList extends Component {
             this.setState({
                 bottomPage: this.state.renderForm,
                 formName: '',
-                formRace: 'humano',
-                formClass: 'barbaro',
-                formLevelMax: 1,
-                formLevelMin: 1,
+                formRace: '',
+                formClass: '',
+                formLevelMax: '',
+                formLevelMin: '',
                 formSort: 'recent',
             });
         } else {
@@ -222,11 +226,11 @@ export default class NpcList extends Component {
         const myQuery = {}
         myQuery.skip = (parseInt(skip) - 1) * 8;
         myQuery.sort = this.state.formSort;
-        myQuery.name = this.state.formName;
-        myQuery.race = this.state.formRace;
-        myQuery.class = this.state.formClass;
-        myQuery.levelMax = this.state.formLevelMax;
-        myQuery.levelMin = this.state.formLevelMin;
+        myQuery.name = this.state.formName !== '' ? this.state.formName : undefined;
+        myQuery.race = this.state.formRace !== '' ? this.state.formRace : undefined;
+        myQuery.class = this.state.formClass !== '' ? this.state.formClass : undefined;
+        myQuery.levelMax = this.state.formLevelMax !== '' ? this.state.formLevelMax : 20;
+        myQuery.levelMin = this.state.formLevelMin !== '' ? this.state.formLevelMin : 1;
         myQuery.limit = 8;
         return queryString.stringify(myQuery)
     }
@@ -323,16 +327,11 @@ export default class NpcList extends Component {
     render() {
         return (
             <>
-                {/* <!-- Page Content --> */}
                 <div className="container">
-
-                    {/* <!-- Page Heading --> */}
                     <h1 className="my-4">Listado de PNJ</h1>
                     <div className="row">
                         {this.state.arrayToShow}
                     </div>
-                    {/* <!-- /.row --> */}
-                    {/* <!-- Pagination --> */}
                     <ul className="pagination justify-content-center">
                         <li className={this.state.paginationFirstArrow}>
                             <button onClick={this.pagination} className="page-link" aria-label="Previous" value="previous">
@@ -359,7 +358,6 @@ export default class NpcList extends Component {
                     <hr />
                     {this.state.bottomPage}
                 </div>
-                {/* <!-- /.container --> */}
             </>
         )
     }

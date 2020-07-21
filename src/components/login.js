@@ -25,7 +25,6 @@ export default class Login extends Component {
         event.preventDefault();
         this.setState({ innerButton: <div className="lds-ellipsis"><div></div><div></div><div></div><div></div></div> });
         const response = await recoverPasswordCall(this.state.mailValue);
-        console.log(response);
         if (response.status === 200) {
             this.setState({
                 recoverMessage:
