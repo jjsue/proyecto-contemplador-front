@@ -40,6 +40,11 @@ export default class ShowNPC extends Component {
             conjuros: conjuros,
         });
     }
+    componentDidUpdate(prevProps) {
+        if (prevProps.data !== this.props.data) {
+            this.componentDidMount();
+        }
+    }
     render() {
         return (
             <>

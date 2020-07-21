@@ -105,6 +105,7 @@ export default class NpcGenerator extends Component {
                     </div>
                     <div className="col-md">
                         <Button variant="warning" size="lg" block onClick={this.onClickChildrenReturn}>Crear otro</Button>{' '}
+                        <Button variant="warning" size="lg" block onClick={this.onClickGenerateOther}>Generar otro igual</Button>{' '}
                     </div>
                 </>,
         }
@@ -130,6 +131,17 @@ export default class NpcGenerator extends Component {
             renderingNow: this.state.form,
             title: "Generador de NPC",
         });
+    }
+    onClickGenerateOther = async (event) => {
+        event.preventDefault();
+        try {
+            let response = await characterCreatorCall(this.state.formNivel, this.state.formClase, this.state.formRaza, this.state.formDados);
+            this.setState({ responseState: response });
+            this.evaluator(response);
+        }
+        catch (err) {
+            console.log(err);
+        }
     }
     submitController = async (event) => {
         event.preventDefault();
