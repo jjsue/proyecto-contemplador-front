@@ -229,7 +229,7 @@ export default class ShowNPC extends Component {
                                         </tr>
                                         <tr>
                                             <th scope="row">Armadura</th>
-                                            <td colSpan="4">{this.props.data.equipo.armadura[0] + ' + ' + this.props.data.equipo.armadura[2] + ' CA'}</td>
+                                            <td colSpan="4">{this.props.data.equipo.armadura === null ? 'Sin armadura' : this.props.data.equipo.armadura[0] + ' + ' + this.props.data.equipo.armadura[2] + ' CA'}</td>
                                         </tr>
                                         <tr>
                                             <th scope="row">Escudo</th>
