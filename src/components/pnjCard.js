@@ -1,3 +1,4 @@
+import './style/cards.css';
 import React, { Component } from "react";
 import { BrowserRouter as Route, Link } from "react-router-dom";
 export default class PnjCard extends Component {
@@ -6,9 +7,9 @@ export default class PnjCard extends Component {
         return (
             <>
                 <div className="col-lg-3 col-md-4 col-sm-6 mb-4 animate slideIn">
-                    <div className="card h-100">
+                    <div className="card h-100 text-white bg-dark border-secondary">
                         <div className="card-body">
-                                <h4 className="card-title">
+                                <h4 className="card-title text-white">
                                     <Link to={enlace} className="card-title">{this.props.data.name}</Link>
                                 </h4>
                             <p className="card-text">Clase: {this.props.data.clase}</p>

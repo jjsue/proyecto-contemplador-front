@@ -1,4 +1,3 @@
-import './style/npcGenerator.css'
 import React, { Component } from "react";
 import { uniqueCharacterCall, obtainCharacterIsPublic, changeCharacterPublic, characterDelete } from './calls/api-calls';
 import ShowNPC from './showNPC';

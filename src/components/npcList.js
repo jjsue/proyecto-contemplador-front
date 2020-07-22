@@ -1,4 +1,5 @@
 import './style/loading.css';
+import './style/npcList.css';
 import React, { Component } from "react";
 import PnjCard from './pnjCard'
 import { publicCharacterCall } from './calls/api-calls';
@@ -236,9 +237,6 @@ export default class NpcList extends Component {
     }
     pagination = (event) => {
         event.preventDefault();
-        // if (parseInt(event.target.value) === this.state.paginationPage) {
-        //     console.log(parseInt(event.target.value));
-        // }
         if (event.target.value === 'previous' || event.target.value === 'next') {
             switch (event.target.value) {
                 case 'previous':
@@ -327,8 +325,11 @@ export default class NpcList extends Component {
     render() {
         return (
             <>
-                <div className="container">
-                    <h1 className="my-4">Listado de PNJ</h1>
+                <div className="container containerNPC pr-4 pl-4 p-2 mt-1 border rounded border-secondary">
+                    <div className="row">
+                        <h1 className="col-12 text-center text-white">Listado de PNJ</h1>
+                    </div>
+                    <hr/>
                     <div className="row">
                         {this.state.arrayToShow}
                     </div>

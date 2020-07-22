@@ -67,12 +67,12 @@ export default class MyRouter extends Component {
         return (
             <>
                 <Router>
-                    <Navbar bg="light" expand="lg">
+                    <Navbar variant="dark" bg="dark" expand="lg">
                         <Navbar.Brand href="/">Proyecto Contemplador</Navbar.Brand>
                         <Navbar.Toggle aria-controls="basic-navbar-nav" />
                         <Navbar.Collapse id="basic-navbar-nav">
                             <Nav className="mr-auto">
-                                <Link to="/" className="nav-link">Home</Link>
+                                <Link to="/" className="nav-link">Inicio</Link>
                                 <Link to="/npclist" className="nav-link">Listado PNJ</Link>
                                 <NavDropdown title="Generador" id="basic-nav-dropdown">
                                     <Link to="/npcgenerator" className="animate slideIn dropdown-item">NPC</Link>

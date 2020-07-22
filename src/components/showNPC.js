@@ -1,4 +1,3 @@
-import './style/npcGenerator.css'
 import { SquareFillIcon } from '@primer/octicons-react'
 import React, { Component } from "react";
 import { Button } from 'react-bootstrap';

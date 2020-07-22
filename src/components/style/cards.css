@@ -1,0 +1,15 @@
+.page-link {
+    background-color: #343a40;
+    color: white;
+}
+
+.page-item.active .page-link {
+    background-color: #fff;;
+    color:black;
+    border-color: black;
+}
+.page-item.disabled .page-link {
+    background-color: grey;
+    border-color: white;
+    color: grey;
+}

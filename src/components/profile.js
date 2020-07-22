@@ -21,11 +21,11 @@ export default class Profile extends Component {
         if (prevState.responseState !== this.state.responseState) {
             if (this.state.responseState.status === 200) {
                 let arrayOfNpc = [];
-                for (let i=0; i<this.state.responseState.data.characterArray.length; i++){
-                    arrayOfNpc.push(<PnjCard key={i} data={this.state.responseState.data.characterArray[i]}/>)
+                for (let i = 0; i < this.state.responseState.data.characterArray.length; i++) {
+                    arrayOfNpc.push(<PnjCard key={i} data={this.state.responseState.data.characterArray[i]} />)
                 }
                 this.setState({
-                    username:  `Personajes de ${this.state.responseState.data.user}`,
+                    username: `Personajes de ${this.state.responseState.data.user}`,
                     arrayToShow: arrayOfNpc,
                 });
             } else if (this.state.responseState.status === 401) {
@@ -41,8 +41,11 @@ export default class Profile extends Component {
     }
     render() {
         return (
-            <div className="container">
-                <h1 className="my-4">{this.state.username}</h1>
+            <div className="container containerNPC pr-4 pl-4 p-2 mt-1 border rounded border-secondary">
+                <div className="row">
+                    <h1 className="col-12 text-center text-white">{this.state.username}</h1>
+                </div>
+                <hr />
                 <div className="row">
                     {this.state.arrayToShow}
                 </div>

@@ -1,0 +1,29 @@
+body {
+        height: 100vh;
+        min-height: 500px;
+        background-image: url('./landing.jpg');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+}
+a {
+    color: white
+}
+a:hover {
+    color:#f8e8d9;
+}
+.btn-primary {
+    background-color: black;
+    border-color: white;
+}
+.btn-primary:hover {
+    background-color: white;
+    border-color: black;
+    color: black;
+}
+.btn-primary.disabled, .btn-primary:disabled {
+    background-color: black;
+    color: white;
+    border-color: white;
+}

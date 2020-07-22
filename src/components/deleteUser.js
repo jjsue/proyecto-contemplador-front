@@ -12,8 +12,8 @@ export default class DeleteUser extends Component {
             responseState: null,
             toShow: null,
             render1: null,
-            render2: null,
             ImportantInfo: null,
+            disabled: false,
         }
     }
     mailChanger = (event) => {
@@ -27,33 +27,35 @@ export default class DeleteUser extends Component {
     }
     submitHandler = async (event) => {
         event.preventDefault();
+        this.setState({ disabled: true });
         this.setState({ responseState: await delUserCall(this.state.formName, this.state.formMail, this.state.formPassword) });
     }
     componentDidUpdate(prevProps, prevState) {
         if (prevState.responseState !== this.state.responseState) {
-            console.log(this.state.responseState.status);
-            console.log(this.state.responseState.data.result);
             if (this.state.responseState.status === 401) {
                 this.setState({
-                    render2:
+                    render1:
                         <Alert variant="danger">
                             {this.state.responseState.data.result}
-                        </Alert>
+                        </Alert>,
+                        disabled: false,
                 });
             }
             else if (this.state.responseState.status === 204) {
                 this.setState({
-                    render2:
+                    render1:
                         <Alert variant="success">
                             Ya estás en el vacío, pulsa en cerrar sesión para borrar las cookies.
-                        </Alert>
+                        </Alert>,
+                        disabled: false,
                 })
             } else {
                 this.setState({
-                    render2:
+                    render1:
                         <Alert variant="danger">
                             Ha ocurrido un error inesperado
-                        </Alert>
+                        </Alert>,
+                        disabled: false,
                 })
             }
         }
@@ -62,9 +64,9 @@ export default class DeleteUser extends Component {
         const { formMail, formName, formPassword } = this.state;
         return (
             <>
-                <div className="container mt-2">
-                    <div className="row align-items-center mb-2 mt-2">
-                        <div className="col align-self-center">
+                <div className="container h-100 mt-2">
+                    <div className="row h-100 align-items-center">
+                        <div className="col-12 text-center bg-dark p-5 rounded">
                             <Form onSubmit={this.submitHandler}>
                                 <Form.Group controlId="formMailId">
                                     <Form.Control size="lg" type="email" placeholder="Correo electronico" onChange={this.mailChanger} value={formMail} />
@@ -75,13 +77,13 @@ export default class DeleteUser extends Component {
                                 <Form.Group controlId="formPasswordId">
                                     <Form.Control size="lg" type="password" placeholder="Contraseña" onChange={this.passChanger} value={formPassword} />
                                 </Form.Group>
-                                <Button variant="danger" size="lg" type="submit" block>Si haces esto no podremos resucitarte</Button>
+                                <Button variant="danger" size="lg" type="submit" block disabled={this.state.disabled}>Si haces esto no podremos resucitarte</Button>
                             </Form>
                         </div>
                     </div>
                     <div className="row mb-2 mt-2">
                         <div className="col align-self-center">
-                            {this.state.render2}
+                            {this.state.render1}
                         </div>
                     </div>
 
