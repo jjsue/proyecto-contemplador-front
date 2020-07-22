@@ -12,7 +12,7 @@ export default class NpcList extends Component {
         this.state = {
             bottomPage: null,
             renderForm:
-                <Form onSubmit={this.submitController}>
+                <Form className="text-white" onSubmit={this.submitController}>
                     <div className="container">
                         <div className="row">
                             <Form.Group controlId="formBasicEmail" className="col-sm">
@@ -106,7 +106,7 @@ export default class NpcList extends Component {
                                 </Form.Control>
                             </Form.Group>
                             <Form.Group controlId="clase" className="col-sm">
-                                <Form.Label>Clase</Form.Label>
+                                <Form.Label>Ordenar por</Form.Label>
                                 <Form.Control as="select" onChange={this.sortController}>
                                     <option value='recent'>Nuevos</option>
                                     <option value='old'>Antiguos</option>
@@ -173,7 +173,7 @@ export default class NpcList extends Component {
         this.setState({ formClass: event.target.value });
     }
     sortController = (event) => {
-        this.setState({ formRace: event.target.value });
+        this.setState({ formSort: event.target.value });
     }
     clickController = (event) => {
         if (event.target.value === 'filter') {
