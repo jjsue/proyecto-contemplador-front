@@ -202,6 +202,13 @@ export default class NpcList extends Component {
     }
     submitController = (event) => {
         event.preventDefault();
+        this.setState({
+            paginationFirstNumber: 1,
+            paginationSecondNumber: 2,
+            paginationThirdNumber: 3,
+            paginationPage: 1,
+        });
+        this.pnjCall(this.queryBuilder(parseInt(1)));
     }
     pnjCall = async (qstring) => {
         try {
