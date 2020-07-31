@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Form, Button } from 'react-bootstrap';
-import { characterCreatorCall, characterSaveCall } from './calls/api-calls';
+import { pnjGeneratorCallDnD35 } from './../calls/api-calls';
 import ShowNPC from './showNPC';
 export default class NpcGenerator extends Component {
     constructor(props) {
@@ -12,7 +12,7 @@ export default class NpcGenerator extends Component {
             formClase: 'barbaro',
             formDados: '2d6',
             renderingNow: '',
-            title: 'Generador de NPC',
+            title: 'Generador de PNJ 3.5',
             saveResponse: null,
             characterName: '',
             form:
@@ -91,19 +91,12 @@ export default class NpcGenerator extends Component {
             responseState: null,
             bottomChildren: <>
                 <div className="col-md">
-                    <Form onSubmit={this.submitSave}>
-                        <div className="row">
-                            <Form.Group className="col-sm">
-                                <Form.Control size="lg" type="text" placeholder="Nombre del personaje" onChange={this.onChangeSave} />
-                            </Form.Group>
-                        </div>
-                        <div className="row">
-                            <Button disabled={this.props.disabled} type="submit" size="lg" className="col-sm">Guardar</Button>
-                        </div>
-                    </Form>
+                    <Button type="submit" size="lg" block>Descargar</Button>
                 </div>
                 <div className="col-md">
                     <Button variant="warning" size="lg" block onClick={this.onClickChildrenReturn}>Crear otro</Button>{' '}
+                </div>
+                <div className="col-md">
                     <Button variant="warning" size="lg" block onClick={this.onClickGenerateOther}>Generar otro igual</Button>{' '}
                 </div>
             </>,
@@ -134,7 +127,7 @@ export default class NpcGenerator extends Component {
     onClickGenerateOther = async (event) => {
         event.preventDefault();
         try {
-            let response = await characterCreatorCall(this.state.formNivel, this.state.formClase, this.state.formRaza, this.state.formDados);
+            let response = await pnjGeneratorCallDnD35(this.state.formNivel, this.state.formClase, this.state.formRaza, this.state.formDados);
             this.setState({ responseState: response });
             this.evaluator(response);
         }
@@ -144,9 +137,9 @@ export default class NpcGenerator extends Component {
     }
     submitController = async (event) => {
         event.preventDefault();
-        this.setState({disabled: true});
+        this.setState({ disabled: true });
         try {
-            let response = await characterCreatorCall(this.state.formNivel, this.state.formClase, this.state.formRaza, this.state.formDados);
+            let response = await pnjGeneratorCallDnD35(this.state.formNivel, this.state.formClase, this.state.formRaza, this.state.formDados);
             this.setState({ responseState: response });
             this.evaluator(response);
         } catch (err) {
@@ -159,7 +152,7 @@ export default class NpcGenerator extends Component {
             this.setState({ disabled: true });
             const dataToSend = this.state.responseState.data.createdCharacter;
             dataToSend.name = this.state.characterName;
-            this.setState({ saveResponse: await characterSaveCall(dataToSend) });
+            //this.setState({ saveResponse: await characterSaveCall(dataToSend) });
             if (this.state.saveResponse.status === 201) {
                 this.setState({
                     bottomChildren:
@@ -182,8 +175,8 @@ export default class NpcGenerator extends Component {
                         </>
 
                 })
-            } 
-            else if (this.state.saveResponse.status === 422){
+            }
+            else if (this.state.saveResponse.status === 422) {
                 alert('Ya tienes un personaje igual o la request no es válida, intenta de nuevo mas tarde')
             }
             else {
@@ -200,12 +193,12 @@ export default class NpcGenerator extends Component {
     evaluator = (responseData) => {
         if (responseData.status === 200) {
             this.setState({
-                renderingNow: <ShowNPC data={responseData.data.createdCharacter} bottom={this.state.bottomChildren}/>,
+                renderingNow: <ShowNPC data={responseData.data.createdCharacter} bottom={this.state.bottomChildren} />,
                 title: "Tu personaje",
             });
-        if (responseData.status === 422){
-            alert('Ya tienes un personaje igual o la request no es válida, intenta de nuevo mas tarde')
-        }
+            if (responseData.status === 422) {
+                alert('Ya tienes un personaje igual o la request no es válida, intenta de nuevo mas tarde')
+            }
         }
     }
     componentDidUpdate(prevProps, prevState) {
