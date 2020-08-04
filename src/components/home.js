@@ -16,8 +16,8 @@ export default class Home extends Component {
                     <div className="container h-100">
                         <div className="row h-100 align-items-center">
                             <div className="col-12 text-center">
-                                <h1 className="font-weight-light">Proyecto contemplador</h1>
-                                {/* <p className="lead">Una aplicación web para los mas roleros</p> */}
+                                <h1 className="font-weight-light">{this.props.titleData[0]}</h1>
+                                <p className="lead">{this.props.titleData[1]}</p>
                             </div>
                         </div>
                     </div>

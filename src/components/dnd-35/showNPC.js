@@ -47,7 +47,7 @@ export default class ShowNPC extends Component {
     render() {
         return (
             <>
-                <div className="container">
+                <div id="pnjPage" className="container">
                     <div className="row mb-2">
                         <div className="col-md">
                             <h5 className="text-center">Raza: {this.props.data.raza}</h5>

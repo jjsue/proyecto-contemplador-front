@@ -16,23 +16,36 @@ export default class MyRouter extends Component {
             <>
                 <Router>
                     <Navbar variant="dark" bg="dark" expand="lg">
-                        <Navbar.Brand href="/">Proyecto Contemplador</Navbar.Brand>
+                        <Navbar.Brand href="/app">Proyecto Contemplador</Navbar.Brand>
                         <Navbar.Toggle aria-controls="basic-navbar-nav" />
                         <Navbar.Collapse id="basic-navbar-nav">
                             <Nav className="mr-auto">
-                                <Link to="/" className="nav-link">Inicio</Link>
+                                <Link to="/app" className="nav-link">Inicio</Link>
                                 <NavDropdown title="Dragones y Mazmorras 3.5" id="basic-nav-dropdown">
-                                    <Link to="/npc35" className="animate slideIn dropdown-item">PNJ</Link>
+                                    <Link to="/app/npc35" className="animate slideIn dropdown-item">PNJ</Link>
+                                </NavDropdown>
+                                <NavDropdown title="Dragones y Mazmorras 5.0" id="basic-nav-dropdown">
+                                    <Link to="/app/underConstruction" className="animate slideIn dropdown-item">PNJ</Link>
+                                </NavDropdown>
+                                <NavDropdown title="Leyenda de los 5 anillos" id="basic-nav-dropdown">
+                                    <Link to="/app/underConstruction" className="animate slideIn dropdown-item">PNJ</Link>
                                 </NavDropdown>
                                 <NavDropdown title="Aquelarre" id="basic-nav-dropdown">
-                                    <Link to="/npc35" className="animate slideIn dropdown-item">PNJ</Link>
+                                    <Link to="/app/underConstruction" className="animate slideIn dropdown-item">PNJ</Link>
                                 </NavDropdown>
                             </Nav>
                         </Navbar.Collapse>
                     </Navbar>
                     <Switch>
-                        <Route exact path="/npc35" component={dnd35Generator} />
-                        <Route exact path="/" component={Home} />
+                        <Route exact path='/app/npc35' component={dnd35Generator} />
+                        <Route exact path='/app/underConstruction'
+                            render={(props) => (
+                                <Home {...props} titleData={["En construcción", "Sentimos las molestias"]} />
+                            )} />
+                        <Route exact path='/app'
+                            render={(props) => (
+                                <Home {...props} titleData={["Proyecto Contemplador", "Una aplicación web para los mas roleros"]} />
+                            )} />
                     </Switch>
                 </Router>
             </>

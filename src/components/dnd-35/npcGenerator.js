@@ -91,7 +91,7 @@ export default class NpcGenerator extends Component {
             responseState: null,
             bottomChildren: <>
                 <div className="col-md">
-                    <Button type="submit" size="lg" block>Descargar</Button>
+                    <Button type="submit" size="lg" block onClick={this.onClickGenerateAndDownload}>Descargar</Button>
                 </div>
                 <div className="col-md">
                     <Button variant="warning" size="lg" block onClick={this.onClickChildrenReturn}>Crear otro</Button>{' '}
@@ -123,6 +123,11 @@ export default class NpcGenerator extends Component {
             renderingNow: this.state.form,
             title: "Generador de NPC",
         });
+    }
+    onClickGenerateAndDownload = (event) => {
+        event.preventDefault();
+        var containerToDownload = document.getElementById("pnjPage");
+        console.log(containerToDownload);
     }
     onClickGenerateOther = async (event) => {
         event.preventDefault();
