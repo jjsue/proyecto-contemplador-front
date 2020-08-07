@@ -2,6 +2,10 @@ import React, { Component } from "react";
 import { Form, Button } from 'react-bootstrap';
 import { pnjGeneratorCallDnD35 } from './../calls/api-calls';
 import ShowNPC from './showNPC';
+import pdfMake from "pdfmake/build/pdfmake";
+import pdfFonts from "pdfmake/build/vfs_fonts";
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
+
 export default class NpcGenerator extends Component {
     constructor(props) {
         super(props);
@@ -125,9 +129,130 @@ export default class NpcGenerator extends Component {
         });
     }
     onClickGenerateAndDownload = (event) => {
-        event.preventDefault();
-        var containerToDownload = document.getElementById("pnjPage");
-        console.log(containerToDownload);
+        try {
+            event.preventDefault();
+            //Rellenamos las habilidades
+            let rellenoHabilidades = [
+                [{ text: 'Nombre', style: 'tableHeader', bold: true, alignment: 'center', fillColor: '#ffff80' },
+                { text: 'Mod. Hab.', style: 'tableHeader', bold: true, alignment: 'center', fillColor: '#ffff80' },
+                { text: 'Caract.', style: 'tableHeader', bold: true, alignment: 'center', fillColor: '#ffff80' },
+                { text: 'Rangos', style: 'tableHeader', bold: true, alignment: 'center', fillColor: '#ffff80' },
+                { text: 'Varios', style: 'tableHeader', bold: true, alignment: 'center', fillColor: '#ffff80' }]
+            ];
+            for (let i = 0; i < this.state.responseState.data.createdCharacter.habilidades.length; i++) {
+                rellenoHabilidades.push([
+                    { text: this.state.responseState.data.createdCharacter.habilidades[i][6] ? this.state.responseState.data.createdCharacter.habilidades[i][0] + ' *' : this.state.responseState.data.createdCharacter.habilidades[i][0], bold: true, alignment: 'center', fillColor: this.state.responseState.data.createdCharacter.habilidades[i][7] ? '#ccffff' : '#ffffff' },
+                    { text: (this.state.responseState.data.createdCharacter.habilidades[i][3] + this.state.responseState.data.createdCharacter.habilidades[i][4] + this.state.responseState.data.createdCharacter.habilidades[i][5]), bold: false, alignment: 'center', fillColor: this.state.responseState.data.createdCharacter.habilidades[i][7] ? '#ccffff' : '#ffffff' },
+                    { text: this.state.responseState.data.createdCharacter.habilidades[i][3], bold: false, alignment: 'center', fillColor: this.state.responseState.data.createdCharacter.habilidades[i][7] ? '#ccffff' : '#ffffff' },
+                    { text: this.state.responseState.data.createdCharacter.habilidades[i][4], bold: false, alignment: 'center', fillColor: this.state.responseState.data.createdCharacter.habilidades[i][7] ? '#ccffff' : '#ffffff' },
+                    { text: this.state.responseState.data.createdCharacter.habilidades[i][5], bold: false, alignment: 'center', fillColor: this.state.responseState.data.createdCharacter.habilidades[i][7] ? '#ccffff' : '#ffffff' }])
+            }
+            const caracteristicasPdfTable = {
+                headerRows: 2,
+                widths: ['auto', 'auto', 'auto'],
+                body: [
+                    [{ text: 'Características', style: 'tableHeader', bold: true, alignment: 'center', colSpan: 3, fillColor: '#ffff80' }, {}, {}],
+                    [{ text: 'Caract.', bold: true, fillColor: '#ffff80' }, { text: 'Punt.', bold: true, fillColor: '#ffff80' }, { text: 'Mod.', bold: true, fillColor: '#ffff80' }],
+                    [{ text: 'Fue', bold: true, fillColor: '#ffff80' }, this.state.responseState.data.createdCharacter.caracteristicas.Fue[0], this.state.responseState.data.createdCharacter.caracteristicas.Fue[1]],
+                    [{ text: 'Des', bold: true, fillColor: '#ffff80' }, this.state.responseState.data.createdCharacter.caracteristicas.Des[0], this.state.responseState.data.createdCharacter.caracteristicas.Des[1]],
+                    [{ text: 'Con', bold: true, fillColor: '#ffff80' }, this.state.responseState.data.createdCharacter.caracteristicas.Con[0], this.state.responseState.data.createdCharacter.caracteristicas.Con[1]],
+                    [{ text: 'Int', bold: true, fillColor: '#ffff80' }, this.state.responseState.data.createdCharacter.caracteristicas.Int[0], this.state.responseState.data.createdCharacter.caracteristicas.Int[1]],
+                    [{ text: 'Sab', bold: true, fillColor: '#ffff80' }, this.state.responseState.data.createdCharacter.caracteristicas.Sab[0], this.state.responseState.data.createdCharacter.caracteristicas.Sab[1]],
+                    [{ text: 'Car', bold: true, fillColor: '#ffff80' }, this.state.responseState.data.createdCharacter.caracteristicas.Car[0], this.state.responseState.data.createdCharacter.caracteristicas.Car[1]],
+                ]
+            }
+            const habilidadesPdfTable = {
+                headerRows: 1,
+                widths: ['auto', 'auto', 'auto', 'auto', 'auto'],
+                body: rellenoHabilidades,
+            }
+            const salvacionesPdfTable = {
+                headerRows: 1,
+                widths: ['auto', 'auto'],
+                body: [
+                    [{ text: 'Salvaciones', style: 'tableHeader', bold: true, alignment: 'center', colSpan: 2, fillColor: '#ffff80' }, {}],
+                    ['Fortaleza', this.state.responseState.data.createdCharacter.caracteristicas.Con[1] + this.state.responseState.data.createdCharacter.salvaciones.fortaleza],
+                    ['Reflejos', this.state.responseState.data.createdCharacter.caracteristicas.Des[1] + this.state.responseState.data.createdCharacter.salvaciones.reflejos],
+                    ['Voluntad', this.state.responseState.data.createdCharacter.caracteristicas.Sab[1] + this.state.responseState.data.createdCharacter.salvaciones.voluntad],
+                ]
+            }
+            const CAPdfTable = {
+                headerRows: 1,
+                widths: ['auto', 'auto'],
+                body: [
+                    [{ text: 'CA', style: 'tableHeader', bold: true, alignment: 'center', colSpan: 2, fillColor: '#ffff80' }, {}],
+                    ['Total', this.state.responseState.data.createdCharacter.ca[0]],
+                    ['Toque', this.state.responseState.data.createdCharacter.ca[1]],
+                    ['Desprevenido', this.state.responseState.data.createdCharacter.ca[2]]
+                ]
+            }
+            function widthsAtaqueBase(ataquesBase) {
+                let toReturn = []
+                for (let i = 0; i < ataquesBase.length; i++) {
+                    toReturn.push('auto');
+                }
+                return toReturn;
+            }
+            function bodyAtaqueBase(ataquesBase) {
+                let toReturn = [
+                    [{ text: 'Ataque base', style: 'tableHeader', bold: true, alignment: 'center', colSpan: ataquesBase.length, fillColor: '#ffff80' }],
+                    []
+                ]
+                for (let i = 0; i < ataquesBase.length; i++) {
+                    (i > 0) ? toReturn[0].push({}) : toReturn[0] = toReturn[0];
+                    toReturn[1].push(ataquesBase[i]);
+                }
+                return toReturn;
+            }
+            const ataqueBasePdfTable = {
+                headerRows: 1,
+                widths: widthsAtaqueBase(this.state.responseState.data.createdCharacter.ataqueBase),
+                body: bodyAtaqueBase(this.state.responseState.data.createdCharacter.ataqueBase),
+            }
+            console.log(ataqueBasePdfTable);
+            console.log(CAPdfTable);
+
+            var pdfToDownload = {
+                content: [
+                    { text: "Tu personaje:" },
+                    {
+                        columns: [
+                            [
+                                { //Tabla de caracteristicas
+                                    table: caracteristicasPdfTable,
+                                    width: 'auto',
+                                    margin: [0, 0, 1, 2], //izq arriba derecha abajo
+                                },
+                                { //Tabla salvaciones
+                                    table: salvacionesPdfTable,
+                                    width: 'auto',
+                                    margin: [0, 0, 1, 2],
+                                },
+                                { //Tabla CA
+                                    table: CAPdfTable,
+                                    width: 'auto',
+                                    margin: [0, 0, 1, 2],
+                                },
+                                { //Tabla Ataque base
+                                    table: ataqueBasePdfTable,
+                                    width: 'auto',
+                                    margin: [0, 0, 1, 2],
+                                },
+                            ],
+                            { //Tabla Habilidades
+                                table: habilidadesPdfTable,
+                                width: 'auto',
+                                margin: [1, 0, 1, 0],
+                            },
+                        ],
+                    }
+                ]
+            }
+            pdfMake.createPdf(pdfToDownload).download();
+        }
+        catch (err) {
+            console.log(err);
+        }
     }
     onClickGenerateOther = async (event) => {
         event.preventDefault();
