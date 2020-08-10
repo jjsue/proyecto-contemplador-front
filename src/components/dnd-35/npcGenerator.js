@@ -242,8 +242,10 @@ export default class NpcGenerator extends Component {
             }
 
             var pdfToDownload = {
+                header: {text: "PNJ D&D 3.5", margin: 4, alignment: 'center', style: 'header'},
+                footer: {text: ["Generado en: ", {text: "Proyecto Contemplador", link: 'https://proyectocontemplador.es/', color: 'blue'} ], margin: 4, alignment: 'left'},
+                
                 content: [
-                    { text: "Tu personaje:" },
                     {
                         columns: [
                             {
@@ -360,9 +362,23 @@ export default class NpcGenerator extends Component {
                             },
                         ],
                     }
-                ]
+                ],
+                styles: {
+                    header: {
+                        fontSize: 18,
+                        bold: true
+                    }
+                },
+                info: {
+                    title: 'PNJ DnD',
+                    author: 'jjsue',
+                    subject: 'Es un personaje de Dragones y Mazmorras',
+                    keywords: 'dragones y mazmorras rol de mesa proyecto contemplador proyectocontemplador generador azar',
+                    creator: 'ProyectoContemplador',
+                    producer: 'ProyectoContemplador Productions',
+                  },
             }
-            pdfMake.createPdf(pdfToDownload).download();
+            pdfMake.createPdf(pdfToDownload).download('pnjdnd.pdf');
         }
         catch (err) {
             console.log(err);
