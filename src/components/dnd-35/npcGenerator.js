@@ -209,12 +209,111 @@ export default class NpcGenerator extends Component {
                 widths: widthsAtaqueBase(this.state.responseState.data.createdCharacter.ataqueBase),
                 body: bodyAtaqueBase(this.state.responseState.data.createdCharacter.ataqueBase),
             }
-            console.log(ataqueBasePdfTable);
-            console.log(CAPdfTable);
+            const ataquesPdfTable = {
+                headerRows: 1,
+                widths: ['auto', 'auto', 'auto'],
+                body: [
+                    [{ text: 'Ataques', style: 'tableHeader', bold: true, alignment: 'center', colSpan: 3, fillColor: '#ffff80' }, {}, {}],
+                    [this.state.responseState.data.createdCharacter.ataques[0][0], this.state.responseState.data.createdCharacter.ataques[0][1], this.state.responseState.data.createdCharacter.ataques[0][2]],
+                    [this.state.responseState.data.createdCharacter.ataques[1][0], this.state.responseState.data.createdCharacter.ataques[1][1], this.state.responseState.data.createdCharacter.ataques[1][2]],
+                    [this.state.responseState.data.createdCharacter.ataques[2][0], this.state.responseState.data.createdCharacter.ataques[2][1], this.state.responseState.data.createdCharacter.ataques[2][2]],
+                ]
+            }
+            const equipoPdfTable = {
+                headerRows: 1,
+                widths: ['auto', 'auto', 'auto', 'auto', 'auto'],
+                body: [
+                    [{ text: 'Equipamiento', style: 'tableHeader', bold: true, alignment: 'center', colSpan: 5, fillColor: '#ffff80' }, {}, {}, {}, {}],
+                    [{ text: 'Armas', style: 'tableHeader', bold: true, alignment: 'center', rowSpan: 3, fillColor: '#ffff80' }, this.state.responseState.data.createdCharacter.equipo.armas[0][0], this.state.responseState.data.createdCharacter.tam === 'med' ? this.state.responseState.data.createdCharacter.equipo.armas[0][3] : this.state.responseState.data.createdCharacter.equipo.armas[0][2], this.state.responseState.data.createdCharacter.equipo.armas[0][4], this.state.responseState.data.createdCharacter.equipo.armas[0][5]],
+                    [{}, this.state.responseState.data.createdCharacter.equipo.armas[1][0], this.state.responseState.data.createdCharacter.tam === 'med' ? this.state.responseState.data.createdCharacter.equipo.armas[1][3] : this.state.responseState.data.createdCharacter.equipo.armas[2][2], this.state.responseState.data.createdCharacter.equipo.armas[1][4], this.state.responseState.data.createdCharacter.equipo.armas[1][5]],
+                    [{}, this.state.responseState.data.createdCharacter.equipo.armas[2][0], this.state.responseState.data.createdCharacter.tam === 'med' ? this.state.responseState.data.createdCharacter.equipo.armas[1][3] : this.state.responseState.data.createdCharacter.equipo.armas[2][2], this.state.responseState.data.createdCharacter.equipo.armas[2][4], this.state.responseState.data.createdCharacter.equipo.armas[2][5]],
+                    [{ text: 'Armadura', style: 'tableHeader', bold: true, alignment: 'center', fillColor: '#ffff80' }, { text: this.state.responseState.data.createdCharacter.equipo.armadura === null ? "Sin armadura" : `${this.state.responseState.data.createdCharacter.equipo.armadura[0]} + ${this.state.responseState.data.createdCharacter.equipo.armadura[2]} a la CA`, colSpan: 4 }, {}, {}, {}],
+                    [{ text: 'Escudo', style: 'tableHeader', bold: true, alignment: 'center', fillColor: '#ffff80' }, { text: this.state.responseState.data.createdCharacter.equipo.escudo === null ? "Sin escudo" : `${this.state.responseState.data.createdCharacter.equipo.escudo[0]} + ${this.state.responseState.data.createdCharacter.equipo.escudo[2]} a la CA`, colSpan: 4 }, {}, {}, {}],
+                ]
+            }
+            const conjurosPdfTable = {
+                headerRows: 1,
+                widths: ['auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto'],
+                body: [
+                    [{ text: 'Conjuros', style: 'tableHeader', bold: true, alignment: 'center', colSpan: 10, fillColor: '#ffff80' }, {}, {}, {}, {}, {}, {}, {}, {}, {}],
+                    [{ text: 0, style: 'tableHeader', bold: true, alignment: 'center', fillColor: '#ffff80' }, { text: 1, style: 'tableHeader', bold: true, alignment: 'center', fillColor: '#ffff80' }, { text: 2, style: 'tableHeader', bold: true, alignment: 'center', fillColor: '#ffff80' }, { text: 3, style: 'tableHeader', bold: true, alignment: 'center', fillColor: '#ffff80' }, { text: 4, style: 'tableHeader', bold: true, alignment: 'center', fillColor: '#ffff80' }, { text: 5, style: 'tableHeader', bold: true, alignment: 'center', fillColor: '#ffff80' }, { text: 6, style: 'tableHeader', bold: true, alignment: 'center', fillColor: '#ffff80' }, { text: 7, style: 'tableHeader', bold: true, alignment: 'center', fillColor: '#ffff80' }, { text: 8, style: 'tableHeader', bold: true, alignment: 'center', fillColor: '#ffff80' }, { text: 9, style: 'tableHeader', bold: true, alignment: 'center', fillColor: '#ffff80' }],
+                     this.state.responseState.data.createdCharacter.conjuros === null ? [{ text: "No tiene", alignment: 'center', colSpan: 10 }, {}, {}, {}, {}, {}, {}, {}, {}, {}] : [this.state.responseState.data.createdCharacter.conjuros[0], this.state.responseState.data.createdCharacter.conjuros[1], this.state.responseState.data.createdCharacter.conjuros[2], this.state.responseState.data.createdCharacter.conjuros[3], this.state.responseState.data.createdCharacter.conjuros[4], this.state.responseState.data.createdCharacter.conjuros[5], this.state.responseState.data.createdCharacter.conjuros[6], this.state.responseState.data.createdCharacter.conjuros[7], this.state.responseState.data.createdCharacter.conjuros[8], this.state.responseState.data.createdCharacter.conjuros[9]]
+                ]
+            }
 
             var pdfToDownload = {
                 content: [
                     { text: "Tu personaje:" },
+                    {
+                        columns: [
+                            {
+                                text: `${this.state.responseState.data.createdCharacter.raza}`,
+                                width: '15%',
+                                alignment: 'center',
+                                margin: [0, 0, 0, 2],
+                            },
+                            {
+                                text: `|`,
+                                width: '2%',
+                                alignment: 'center',
+                                margin: [0, 0, 0, 2],
+                            },
+                            {
+                                text: `${this.state.responseState.data.createdCharacter.clase}`,
+                                width: '15%',
+                                alignment: 'center',
+                                margin: [0, 0, 0, 2],
+                            },
+                            {
+                                text: `|`,
+                                width: '2%',
+                                alignment: 'center',
+                                margin: [0, 0, 0, 2],
+                            },
+                            {
+                                text: `PG: ${this.state.responseState.data.createdCharacter.pg}`,
+                                width: '15%',
+                                alignment: 'center',
+                                margin: [0, 0, 0, 2],
+                            },
+                            {
+                                text: `|`,
+                                width: '2%',
+                                alignment: 'center',
+                                margin: [0, 0, 0, 2],
+                            },
+                            {
+                                text: `Nivel: ${this.state.responseState.data.createdCharacter.nivel}`,
+                                width: '15%',
+                                alignment: 'center',
+                                margin: [0, 0, 0, 2],
+                            },
+                            {
+                                text: `|`,
+                                width: '2%',
+                                alignment: 'center',
+                                margin: [0, 0, 0, 2],
+                            },
+                            {
+                                text: `Alin.: ${this.state.responseState.data.createdCharacter.alineamiento}`,
+                                width: '15%',
+                                alignment: 'center',
+                                margin: [0, 0, 0, 2],
+                            },
+                            {
+                                text: `|`,
+                                width: '2%',
+                                alignment: 'center',
+                                margin: [0, 0, 0, 2],
+                            },
+                            {
+                                text: `Velocidad: ${this.state.responseState.data.createdCharacter.velocidad}`,
+                                width: '15%',
+                                alignment: 'center',
+                                margin: [0, 0, 0, 2],
+                            },
+                        ],
+                    },
                     {
                         columns: [
                             [
@@ -235,6 +334,21 @@ export default class NpcGenerator extends Component {
                                 },
                                 { //Tabla Ataque base
                                     table: ataqueBasePdfTable,
+                                    width: 'auto',
+                                    margin: [0, 0, 1, 2],
+                                },
+                                { //Tabla Ataques
+                                    table: ataquesPdfTable,
+                                    width: 'auto',
+                                    margin: [0, 0, 1, 2],
+                                },
+                                { //Tabla equipo
+                                    table: equipoPdfTable,
+                                    width: 'auto',
+                                    margin: [0, 0, 1, 2],
+                                },
+                                { //Tabla Conjuros
+                                    table: conjurosPdfTable,
                                     width: 'auto',
                                     margin: [0, 0, 1, 2],
                                 },
