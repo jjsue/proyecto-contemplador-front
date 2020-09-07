@@ -24,13 +24,13 @@ export default class MyRouter extends Component {
                                 <NavDropdown title="Dragones y Mazmorras 3.5" id="basic-nav-dropdown">
                                     <Link to="/app/npc35" className="animate slideIn dropdown-item">PNJ</Link>
                                 </NavDropdown>
-                                <NavDropdown title="Dragones y Mazmorras 5.0" id="basic-nav-dropdown">
+                                <NavDropdown title="Dragones y Mazmorras 5.0" id="basic-nav-dropdown" disabled>
                                     <Link to="/app/underConstruction" className="animate slideIn dropdown-item">PNJ</Link>
                                 </NavDropdown>
-                                <NavDropdown title="Leyenda de los 5 anillos" id="basic-nav-dropdown">
+                                <NavDropdown title="Leyenda de los 5 anillos" id="basic-nav-dropdown" disabled>
                                     <Link to="/app/underConstruction" className="animate slideIn dropdown-item">PNJ</Link>
                                 </NavDropdown>
-                                <NavDropdown title="Aquelarre" id="basic-nav-dropdown">
+                                <NavDropdown title="Aquelarre" id="basic-nav-dropdown" disabled>
                                     <Link to="/app/underConstruction" className="animate slideIn dropdown-item">PNJ</Link>
                                 </NavDropdown>
                             </Nav>
